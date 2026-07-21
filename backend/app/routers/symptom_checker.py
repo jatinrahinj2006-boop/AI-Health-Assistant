@@ -78,7 +78,6 @@ If you return a final assessment (done=true), you MUST suggest one plain-languag
 - General Doctor
 
 If no specific specialty applies, use "General Doctor". Never return a free-form text or a clinical term (like Neurologist) as the suggested_specialty value.
-"""
 
 CRITICAL RULE: If the history contains fewer than 2 answered questions, you MUST continue asking questions. Set "done" to false, "next_question" to a new relevant follow-up question, and "assessment" to null.
 If you suspect a medical emergency, set done=true, next_question=null, is_emergency=true, and provide emergency_message instructions immediately. Keep questions clear and concise.
