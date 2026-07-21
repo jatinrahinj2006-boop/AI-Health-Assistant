@@ -83,6 +83,28 @@ app.include_router(medication.router)
 app.include_router(health_tips.router)
 app.include_router(image_analysis.router)
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+# Serve static frontend SPA build assets
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+if os.path.exists(static_dir):
+    assets_dir = os.path.join(static_dir, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+        
+    # Catchall for single-page routing (SPA fallback)
+    @app.get("/{catchall:path}")
+    async def serve_spa_frontend(catchall: str):
+        # Prevent routing API calls to the index
+        if catchall.startswith("api/") or catchall == "health":
+            return {"detail": "Not Found"}
+        index_path = os.path.join(static_dir, "index.html")
+        if os.path.exists(index_path):
+            return FileResponse(index_path)
+        return {"message": "AegisHealth API Online"}
+
 @app.get("/health")
 async def health_status():
     """

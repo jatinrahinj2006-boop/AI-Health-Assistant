@@ -77,7 +77,19 @@ export function useVoice() {
       .slice(0, 500); // Read first 500 characters to keep it brief
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = getLanguageLocale();
+    const locale = getLanguageLocale();
+    utterance.lang = locale;
+
+    // Check voice availability
+    try {
+      const voices = window.speechSynthesis.getVoices();
+      const matched = voices.some(v => v.lang.toLowerCase().replace('_', '-').startsWith(locale.toLowerCase().split('-')[0]));
+      if (!matched && voices.length > 0 && locale !== 'en-US') {
+        console.warn(`Local regional TTS voice for '${locale}' was not found. SpeechSynthesis will fall back to browser default voice.`);
+      }
+    } catch (err) {
+      console.warn("Could not verify system voices list:", err);
+    }
 
     utterance.onstart = () => setSpeaking(true);
     

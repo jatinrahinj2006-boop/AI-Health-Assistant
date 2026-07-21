@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { 
   AlertTriangle, 
   Activity, 
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function StructuredResultCard({ 
   result, 
@@ -22,6 +23,8 @@ export default function StructuredResultCard({
   onBookmark = null,
   isBookmarked = false
 }) {
+  const cardRef = useRef(null);
+
   const {
     summary = "",
     possible_causes = [],
@@ -35,143 +38,53 @@ export default function StructuredResultCard({
 
   const isMock = source === 'mock';
 
-  const handleExportPDF = () => {
+  const handleExportPDF = async () => {
+    if (!cardRef.current) return;
     try {
-      const doc = new jsPDF();
-      let y = 20;
+      // Temporarily hide action buttons during snapshot to keep PDF clean
+      const actionButtons = cardRef.current.querySelector('.pdf-action-buttons');
+      if (actionButtons) {
+        actionButtons.style.visibility = 'hidden';
+      }
 
-      // Branded Title Header
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(18);
-      doc.setTextColor(14, 116, 144); // Teal primary color matching theme
-      doc.text("AegisHealth AI Clinical Report", 14, y);
-      y += 8;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
-      doc.setTextColor(100, 116, 139); // Slate-500
-      doc.text(`Generated on: ${new Date().toLocaleString()} | Source: ${isMock ? 'Mock Profile' : 'Live Gateway'}`, 14, y);
-      y += 12;
-
-      // Divider line
-      doc.setDrawColor(203, 213, 225); // Slate-200
-      doc.line(14, y, 196, y);
-      y += 10;
-
-      // 1. Summary Section
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
-      doc.setTextColor(15, 23, 42); // Slate-900
-      doc.text("Clinical Intake Summary", 14, y);
-      y += 6;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(51, 65, 85); // Slate-700
-      const summaryLines = doc.splitTextToSize(summary || "", 175);
-      doc.text(summaryLines, 14, y);
-      y += (summaryLines.length * 5) + 8;
-
-      // 2. Possible Causes
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
-      doc.setTextColor(15, 23, 42);
-      doc.text("Possible Causes / Associations", 14, y);
-      y += 6;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(51, 65, 85);
-      (possible_causes || []).forEach(cause => {
-        doc.text(`- ${cause}`, 14, y);
-        y += 6;
+      const canvas = await html2canvas(cardRef.current, {
+        scale: 2, // High resolution scaling
+        useCORS: true,
+        logging: false,
+        backgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#ffffff'
       });
-      if (!possible_causes || possible_causes.length === 0) {
-        doc.text("- No specific causes identified.", 14, y);
-        y += 6;
-      }
-      y += 4;
 
-      // 3. Self Care Guidelines
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
-      doc.setTextColor(15, 23, 42);
-      doc.text("Self-Care & Home-Care Guidelines", 14, y);
-      y += 6;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(51, 65, 85);
-      (self_care || []).forEach(item => {
-        const itemLines = doc.splitTextToSize(`- ${item}`, 175);
-        doc.text(itemLines, 14, y);
-        y += (itemLines.length * 5) + 2;
-      });
-      if (!self_care || self_care.length === 0) {
-        doc.text("- No guidelines available.", 14, y);
-        y += 6;
-      }
-      y += 4;
-
-      // Page break check
-      if (y > 220) {
-        doc.addPage();
-        y = 20;
+      if (actionButtons) {
+        actionButtons.style.visibility = 'visible';
       }
 
-      // 4. Warning Signs (Red Flags)
-      if (warning_signs && warning_signs.length > 0) {
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(12);
-        doc.setTextColor(185, 28, 28); // Red-700
-        doc.text("Critical Red Flags & Warning Signs", 14, y);
-        y += 6;
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(10);
-        doc.setTextColor(185, 28, 28);
-        warning_signs.forEach(sign => {
-          doc.text(`• ${sign}`, 14, y);
-          y += 6;
-        });
-        y += 4;
+      const imgData = canvas.toDataURL('image/png');
+      
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      const margin = 10;
+      const contentWidth = pdfWidth - (margin * 2);
+      const contentHeight = (canvas.height * contentWidth) / canvas.width;
+      
+      let heightLeft = contentHeight;
+      let position = margin;
+      
+      pdf.addImage(imgData, 'PNG', margin, position, contentWidth, contentHeight);
+      heightLeft -= (pdfHeight - (margin * 2));
+      
+      while (heightLeft > 0) {
+        pdf.addPage();
+        position = heightLeft - contentHeight + margin;
+        pdf.addImage(imgData, 'PNG', margin, position, contentWidth, contentHeight);
+        heightLeft -= (pdfHeight - (margin * 2));
       }
-
-      if (y > 230) {
-        doc.addPage();
-        y = 20;
-      }
-
-      // 5. When to see doctor
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
-      doc.setTextColor(15, 23, 42);
-      doc.text("Professional Care Guidance", 14, y);
-      y += 6;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(51, 65, 85);
-      const docAdviceLines = doc.splitTextToSize(when_to_see_doctor || "", 175);
-      doc.text(docAdviceLines, 14, y);
-      y += (docAdviceLines.length * 5) + 12;
-
-      // 6. Disclaimer
-      if (y > 250) {
-        doc.addPage();
-        y = 20;
-      }
-      doc.setFont("helvetica", "oblique");
-      doc.setFontSize(8);
-      doc.setTextColor(148, 163, 184); // Slate-400
-      const disclaimerLines = doc.splitTextToSize(disclaimer || "", 175);
-      doc.text(disclaimerLines, 14, y);
-
-      // Save PDF
-      doc.save(`AegisHealth_Report_${Date.now()}.pdf`);
+      
+      pdf.save(`AegisHealth_Report_${Date.now()}.pdf`);
     } catch (err) {
-      console.error("Failed to generate PDF", err);
-      alert("Error printing PDF: " + err.message);
+      console.error("PDF canvas export failed:", err);
+      alert("Failed to export PDF: " + err.message);
     }
   };
   
@@ -221,6 +134,7 @@ export default function StructuredResultCard({
 
   return (
     <motion.div 
+      ref={cardRef}
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       className={`glass-panel overflow-hidden border-t-4 ${
@@ -238,7 +152,7 @@ export default function StructuredResultCard({
           </span>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 pdf-action-buttons">
           {isMock && (
             <span className="px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-[9px] font-bold uppercase tracking-wider">
               Simulated AI Profile
