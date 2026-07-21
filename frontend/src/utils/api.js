@@ -1,13 +1,14 @@
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return 'http://localhost:8000';
-    }
-    // Fallback if VITE_API_URL environment variable is provided in split environments
-    if (import.meta.env.VITE_API_URL) {
-      return import.meta.env.VITE_API_URL;
-    }
-    return '';
+  // Local development: always hit the local backend
+  if (typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://localhost:8000';
+  }
+  // Production: VITE_API_URL is baked in at build time by Vite.
+  // Must be set in .env.production or as a Render env var BEFORE npm run build.
+  // If not set (unified same-origin deploy like Cloud Run), fall back to '' (relative URLs).
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace(/\/$/, ''); // strip trailing slash
   }
   return '';
 };
