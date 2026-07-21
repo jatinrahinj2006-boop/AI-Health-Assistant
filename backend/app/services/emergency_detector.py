@@ -1,14 +1,20 @@
 import re
 from typing import Tuple, Optional
 
-# Compiled regular expressions for fast scanning
+# Regex to detect informational/educational queries to prevent false positive warnings
+NON_EMERGENCY_CONTEXT = re.compile(
+    r"\b(article|read|reading|learn|understand|explain|what causes|research|studying|what is|definition|example of|tell me about|info on|information about)\b",
+    re.IGNORECASE
+)
+
+# Comprehensive category regular expressions to screen symptoms
 SUICIDE_REGEX = re.compile(
     r"\b(suicid|kill myself|end my life|self harm|want to die|cut myself|hanging myself|overdose|poison myself|take my own life)\b", 
     re.IGNORECASE
 )
 
 CHEST_PAIN_REGEX = re.compile(
-    r"\b(chest pain|heart attack|crushing chest|pain in chest|chest tightness|angina|pressure in chest|pain radiating to arm)\b",
+    r"\b(chest pain|heart attack|crushing chest|pain in chest|chest tightness|angina|pressure in chest|pain radiating to arm|pain radiating to left arm)\b",
     re.IGNORECASE
 )
 
@@ -34,15 +40,21 @@ CONSCIOUSNESS_REGEX = re.compile(
 
 def detect_emergency(text: str) -> Tuple[bool, Optional[str]]:
     """
-    Performs rapid, keyword-based screening on user-provided text.
+    Performs rapid, keyword and context-aware screening on user-provided text.
     Returns:
         (is_emergency: bool, emergency_message: Optional[str])
     """
     if not text:
         return False, None
 
-    # 1. Check for Suicidal Ideation / Self-harm Intent
-    if SUICIDE_REGEX.search(text):
+    lower_text = text.lower()
+
+    # 1. Check for informational/educational context upfront
+    if NON_EMERGENCY_CONTEXT.search(lower_text):
+        return False, None
+
+    # 2. Check for Suicidal Ideation / Self-harm Intent
+    if SUICIDE_REGEX.search(lower_text):
         return True, (
             "SAFETY WARNING: It sounds like you may be going through a difficult time. Please know you are not alone. "
             "Help is available 24/7. National Suicide Prevention Lifeline: Call or text 988 (USA/Canada). "
@@ -51,17 +63,17 @@ def detect_emergency(text: str) -> Tuple[bool, Optional[str]]:
             "Please reach out to someone who can support you."
         )
 
-    # 2. Check physical emergency indicators
+    # 3. Check physical emergency indicators
     reasons = []
-    if CHEST_PAIN_REGEX.search(text):
+    if CHEST_PAIN_REGEX.search(lower_text):
         reasons.append("chest pain or potential cardiac event symptoms")
-    if STROKE_REGEX.search(text):
+    if STROKE_REGEX.search(lower_text):
         reasons.append("stroke indicators (facial droop, slurred speech, or weakness)")
-    if BREATHING_REGEX.search(text):
+    if BREATHING_REGEX.search(lower_text):
         reasons.append("severe respiratory distress or shortness of breath")
-    if BLEEDING_REGEX.search(text):
+    if BLEEDING_REGEX.search(lower_text):
         reasons.append("severe, uncontrolled bleeding")
-    if CONSCIOUSNESS_REGEX.search(text):
+    if CONSCIOUSNESS_REGEX.search(lower_text):
         reasons.append("loss of consciousness or unresponsiveness")
 
     if reasons:
@@ -83,17 +95,17 @@ if __name__ == "__main__":
     assert is_em is True, "Failed suicide check"
     assert "988" in msg, "Failed to include crisis hotline info"
     print("PASS: Test 1: Suicidal Intent detected.")
-
+ 
     # Test 2: Chest Pain
-    is_em, msg = detect_emergency("I have a crushing chest pain that spreads to my neck")
+    is_em, msg = detect_emergency("I have crushing chest pain radiating to my left arm")
     assert is_em is True, "Failed chest pain check"
     assert "cardiac" in msg, "Failed to include cardiorespiratory warning"
     print("PASS: Test 2: Chest Pain detected.")
 
-    # Test 3: Standard cold
-    is_em, msg = detect_emergency("I have a mild runny nose and minor cough")
-    assert is_em is False, "Failed normal check"
-    assert msg is None, "Message should be None"
-    print("PASS: Test 3: Non-emergency query passed clean.")
+    # Test 3: Informational Context (False Positive Prevention)
+    is_em, msg = detect_emergency("I read an article about chest pain symptoms online... want to understand what causes them")
+    assert is_em is False, "Failed to ignore informational query"
+    assert msg is None, "Informational query should return None"
+    print("PASS: Test 3: Informational context ignored successfully.")
     
     print("All tests completed successfully!")

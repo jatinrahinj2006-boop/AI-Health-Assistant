@@ -83,5 +83,15 @@ class TestEmergencyDetector(unittest.TestCase):
         self.assertFalse(is_em)
         self.assertIsNone(msg)
 
+    def test_informational_chest_pain_article(self):
+        is_em, msg = detect_emergency("I read an article about chest pain symptoms online... want to understand what causes them")
+        self.assertFalse(is_em)
+        self.assertIsNone(msg)
+
+    def test_learning_heart_attack(self):
+        is_em, msg = detect_emergency("explain to me what causes a heart attack and its symptoms")
+        self.assertFalse(is_em)
+        self.assertIsNone(msg)
+
 if __name__ == '__main__':
     unittest.main()
