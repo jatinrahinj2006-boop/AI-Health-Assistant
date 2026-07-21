@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { 
   Activity, 
   Stethoscope, 
@@ -23,6 +24,7 @@ const cardVariants = {
 
 export default function Dashboard({ onStartSymptomCheck }) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [dailyTips, setDailyTips] = useState([]);
   const [recentConsults, setRecentConsults] = useState([]);
   const [recentChats, setRecentChats] = useState([]);
@@ -99,14 +101,13 @@ export default function Dashboard({ onStartSymptomCheck }) {
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-health-500/10 border border-health-500/20 text-health-300 text-xs font-semibold mb-4">
             <Shield className="w-3.5 h-3.5" />
-            <span>Encrypted & Confidential AI Care</span>
+            <span>{t('encryptedCare')}</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
-            Digital Health <span className="text-glow-teal font-medium">Intelligence</span> at Your Service
+            {t('heroTitle')}
           </h1>
           <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
-            Get instant clinical evaluations, check medication facts, or speak with our AI wellness assistant. 
-            All insights are structured and backed by safety filters.
+            {t('heroDesc')}
           </p>
           <div className="flex flex-wrap gap-3">
             <button 
@@ -114,14 +115,14 @@ export default function Dashboard({ onStartSymptomCheck }) {
               className="px-5 py-3 rounded-xl bg-health-500 hover:bg-health-600 font-medium text-sm flex items-center space-x-2 transition-all hover:shadow-glow-teal hover:scale-[1.02] cursor-pointer"
             >
               <Stethoscope className="w-4 h-4" />
-              <span>Symptom Assessment</span>
+              <span>{t('symptomAssessment')}</span>
             </button>
             <button 
               onClick={() => navigate('/chat')}
               className="px-5 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 hover:text-white border border-slate-700/50 font-medium text-sm flex items-center space-x-2 transition-all cursor-pointer"
             >
               <MessageSquare className="w-4 h-4" />
-              <span>Ask AI Chat</span>
+              <span>{t('askAIChat')}</span>
             </button>
           </div>
         </div>
@@ -140,16 +141,16 @@ export default function Dashboard({ onStartSymptomCheck }) {
             <div className="p-3 bg-health-500/10 dark:bg-health-500/5 text-health-500 dark:text-health-400 rounded-2xl w-fit mb-4">
               <Stethoscope className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold mb-2 dark:text-white font-sans">Guided Symptom Checker</h3>
+            <h3 className="text-lg font-bold mb-2 dark:text-white font-sans">{t('symptomChecker')}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-              Engage in an adaptive questionnaire clarifying symptoms to generate a structured clinical assessment report.
+              {t('cardSymptomDesc')}
             </p>
           </div>
           <button 
             onClick={() => navigate('/symptoms')}
             className="text-xs font-semibold text-health-500 dark:text-health-400 hover:text-health-600 dark:hover:text-health-300 flex items-center space-x-1 cursor-pointer transition-all self-start group"
           >
-            <span>Run Symptom Check</span>
+            <span>{t('runSymptomCheck')}</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
           </button>
         </motion.div>
@@ -164,16 +165,16 @@ export default function Dashboard({ onStartSymptomCheck }) {
             <div className="p-3 bg-indigoaccent-500/10 dark:bg-indigoaccent-500/5 text-indigoaccent-500 dark:text-indigoaccent-400 rounded-2xl w-fit mb-4">
               <Pill className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold mb-2 dark:text-white font-sans">Medication Facts Lookup</h3>
+            <h3 className="text-lg font-bold mb-2 dark:text-white font-sans">{t('medicationInfo')}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-              Analyze dosage limits, generic names, potential drug interactions, and warning disclaimers.
+              {t('cardMedDesc')}
             </p>
           </div>
           <button 
             onClick={() => navigate('/medication')}
             className="text-xs font-semibold text-indigoaccent-500 dark:text-indigoaccent-400 hover:text-indigoaccent-600 dark:hover:text-indigoaccent-300 flex items-center space-x-1 cursor-pointer transition-all self-start group"
           >
-            <span>Lookup Medication</span>
+            <span>{t('lookupMedication')}</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
           </button>
         </motion.div>
@@ -188,16 +189,16 @@ export default function Dashboard({ onStartSymptomCheck }) {
             <div className="p-3 bg-amber-500/10 rounded-2xl text-amber-500 dark:text-amber-400 w-fit mb-4">
               <Camera className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold mb-2 dark:text-white font-sans">Visual Health Analyzer</h3>
+            <h3 className="text-lg font-bold mb-2 dark:text-white font-sans">{t('visualAnalyzer')}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-              Upload prescription labels, pill packaging, or visible skin irritation details for vision analysis.
+              {t('cardVisionDesc')}
             </p>
           </div>
           <button 
             onClick={() => navigate('/vision')}
             className="text-xs font-semibold text-amber-500 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 flex items-center space-x-1 cursor-pointer transition-all self-start group"
           >
-            <span>Analyze Image</span>
+            <span>{t('analyzeImage')}</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
           </button>
         </motion.div>
@@ -214,7 +215,7 @@ export default function Dashboard({ onStartSymptomCheck }) {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 pb-4 border-b border-slate-200/25 dark:border-slate-800/25 gap-3">
               <div className="flex items-center space-x-2">
                 <Clock className="w-4 h-4 text-health-500" />
-                <h3 className="text-base font-bold dark:text-white">Recent Activity</h3>
+                <h3 className="text-base font-bold dark:text-white">{t('recentActivity')}</h3>
               </div>
 
               {/* Sub-tabs selector */}
@@ -227,7 +228,7 @@ export default function Dashboard({ onStartSymptomCheck }) {
                       : 'text-slate-500 hover:bg-slate-500/10'
                   }`}
                 >
-                  Intake Reports
+                  {t('consultations')}
                 </button>
                 <button
                   onClick={() => setActivityTab('chats')}
@@ -237,7 +238,7 @@ export default function Dashboard({ onStartSymptomCheck }) {
                       : 'text-slate-500 hover:bg-slate-500/10'
                   }`}
                 >
-                  AI Conversations
+                  {t('chats')}
                 </button>
               </div>
             </div>
@@ -328,7 +329,7 @@ export default function Dashboard({ onStartSymptomCheck }) {
           <div className="glass-panel p-6">
             <div className="flex items-center space-x-2 mb-4">
               <Bookmark className="w-4 h-4 text-indigoaccent-500" />
-              <h3 className="text-base font-bold dark:text-white">Bookmarked Medications & Tips</h3>
+              <h3 className="text-base font-bold dark:text-white">{t('bookmarksSaved')}</h3>
             </div>
 
             {bookmarks.length === 0 ? (
@@ -372,7 +373,7 @@ export default function Dashboard({ onStartSymptomCheck }) {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
                   <TrendingUp className="w-4 h-4 text-amber-500" />
-                  <h3 className="text-base font-bold dark:text-white">Wellness & Tips</h3>
+                  <h3 className="text-base font-bold dark:text-white">{t('dailyTips')}</h3>
                   {tipsSource === 'mock' && (
                     <span className="text-[8px] px-1.5 py-0.5 bg-amber-500/15 border border-amber-500/20 text-amber-500 rounded font-bold uppercase tracking-wider">
                       Simulated

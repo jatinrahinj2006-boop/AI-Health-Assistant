@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Bookmark, Trash2, ChevronRight, Pill, Stethoscope, Heart, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Bookmarks() {
+  const { t } = useLanguage();
   const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function Bookmarks() {
             <Bookmark className="w-8 h-8" />
           </div>
           <div>
-            <h2 className="text-xl font-bold dark:text-white font-sans">Bookmarked Materials</h2>
+            <h2 className="text-xl font-bold dark:text-white font-sans">{t('savedBookmarks')}</h2>
             <p className="text-xs text-slate-400">Manage your saved consultations, medication facts sheets, and wellness tips</p>
           </div>
         </div>
@@ -43,7 +45,7 @@ export default function Bookmarks() {
         {bookmarks.length === 0 ? (
           <div className="text-center py-12">
             <Bookmark className="w-12 h-12 text-slate-400 mx-auto mb-4 opacity-50" />
-            <p className="text-sm font-semibold dark:text-white">No Bookmarks Saved Yet</p>
+            <p className="text-sm font-semibold dark:text-white">{t('noBookmarks')}</p>
             <p className="text-xs text-slate-400 mt-1">Bookmark medications, symptom reports, or wellness tips to see them here.</p>
           </div>
         ) : (

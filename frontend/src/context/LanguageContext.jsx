@@ -4,6 +4,7 @@ const LanguageContext = createContext();
 
 const translations = {
   en: {
+    // Nav / Sidebar / Header
     dashboard: "Dashboard",
     symptomChecker: "Symptom Checker",
     aiChat: "AI Chat Q&A",
@@ -12,8 +13,30 @@ const translations = {
     preventiveCare: "Preventive Care",
     bookmarks: "Bookmarks",
     settings: "Settings",
-    askAssistant: "Ask general health questions or symptoms...",
-    send: "Send",
+    careHub: "CuraHealth AI Care Hub",
+    safetyScanner: "Local 911 Safety Scanner Active",
+
+    // Dashboard
+    encryptedCare: "Encrypted & Confidential AI Care",
+    heroTitle: "Digital Health Intelligence at Your Service",
+    heroDesc: "Get instant clinical evaluations, check medication facts, or speak with our AI wellness assistant. All insights are structured and backed by safety filters.",
+    symptomAssessment: "Symptom Assessment",
+    askAIChat: "Ask AI Chat",
+    runSymptomCheck: "Run Symptom Check",
+    lookupMedication: "Lookup Medication",
+    analyzeImage: "Analyze Image",
+    dailyTips: "Daily Preventative Health Tips",
+    tipCategory: "Tip Category",
+    recentActivity: "Recent Activity Log",
+    cardSymptomDesc: "Engage in an adaptive questionnaire clarifying symptoms to generate a structured clinical assessment report.",
+    cardMedDesc: "Analyze dosage limits, generic names, potential drug interactions, and warning disclaimers.",
+    cardVisionDesc: "Upload prescription labels, pill packaging, or visible skin irritation details for vision analysis.",
+    consultations: "Consultations",
+    chats: "Chats",
+    bookmarksSaved: "Bookmarks & Saved Info",
+
+    // Symptom Checker
+    clinicalSymptomAssessment: "Clinical Symptom Assessment",
     enterSymptom: "Describe your symptoms in detail (e.g. fever for 3 days)...",
     emergencyWarning: "CRITICAL EMERGENCY WARNING",
     callEmergency: "Call Emergency Services (911)",
@@ -22,19 +45,66 @@ const translations = {
     loading: "Analyzing...",
     clear: "Clear",
     search: "Search",
-    savedBookmarks: "Bookmarked Materials",
-    medicalDisclaimer: "Clinical Information Platform Disclaimer",
-    startAssessment: "Start Symptom Assessment",
+    startIntake: "Start Intake",
+    intakeFollowUp: "Intake Follow-up",
+    clinicalFollowUp: "Clinical Follow-up",
+    nextQuestion: "Next Question",
+    prevQuestion: "Previous Question",
+    generateFinalAssessment: "Generate Final Assessment",
+    symptomCheckerReport: "Symptom Checker Report",
+    bookmarkReport: "Bookmark Report",
+    printSummary: "Print Summary",
+    startNewAssessment: "Start New Assessment",
+    restartChecker: "Restart Checker",
+    selectOptionError: "Please select or type an answer to continue.",
+
+    // AI Chat
+    aiHealthExploration: "AI Health Exploration",
+    commonExplorations: "Common Health Explorations",
+    askAssistant: "Ask general health questions or symptoms...",
     clearHistory: "Clear History",
-    recentActivity: "Recent Activity",
-    intakeReports: "Intake Reports",
-    aiConversations: "AI Conversations",
+    speakResponse: "Speak Response",
+    stopSpeaking: "Stop Speaking",
+    thinking: "Thinking and structuring response...",
+    send: "Send",
+
+    // Medications
+    medicationPortal: "Medication Information Portal",
+    searchMedication: "Search Medication...",
+    recentSearches: "Recent Searches",
+    dosageLimits: "Dosage Limits",
+    activeIngredients: "Active Ingredients",
+    drugInteractions: "Drug Interactions",
+    sideEffects: "Side Effects",
+    warnings: "Warnings & Contraindications",
+
+    // Visual Analyzer
+    visualHealthAnalyzer: "Visual Health Analyzer",
+    visualUploadDesc: "Upload an image of a medication label, pill bottle, or visible skin condition for detailed AI analysis.",
+    category: "Category",
+    medicationLabel: "Medication Label",
+    skinCondition: "Skin Condition",
+    dragDropText: "Drag and drop your image here, or click to browse",
+    analyzingImage: "Analyzing image...",
+    visionAnalysisResult: "Vision Analysis Result",
+
+    // Bookmarks
+    savedBookmarks: "Bookmarked Materials",
+    noBookmarks: "No bookmarked items yet.",
+
+    // Settings
+    settingsCustomization: "Settings & Customization",
     themeMode: "Theme Mode",
     activeTheme: "Active Theme",
+    lightMode: "Light Mode",
+    darkMode: "Dark Mode",
+    dbManagement: "Database Management",
     clearSaved: "Clear Saved History",
-    specifications: "Platform Specifications"
+    clearSavedDesc: "This will permanently delete all local consultation reports, bookmarks, and chat histories.",
+    deleteAllData: "Delete All Data"
   },
   hi: {
+    // Nav / Sidebar / Header
     dashboard: "डैशबोर्ड",
     symptomChecker: "लक्षण जाँचक",
     aiChat: "एआई चैट",
@@ -43,8 +113,30 @@ const translations = {
     preventiveCare: "निवारक देखभाल",
     bookmarks: "बुकमार्क",
     settings: "सेटिंग्स",
-    askAssistant: "सामान्य स्वास्थ्य प्रश्न या लक्षण पूछें...",
-    send: "भेजें",
+    careHub: "क्यूराहेल्थ एआई केयर हब",
+    safetyScanner: "स्थानीय 911 सुरक्षा स्कैनर सक्रिय",
+
+    // Dashboard
+    encryptedCare: "एन्क्रिप्टेड और गोपनीय एआई केयर",
+    heroTitle: "आपकी सेवा में डिजिटल स्वास्थ्य बुद्धिमत्ता",
+    heroDesc: "तुरंत नैदानिक मूल्यांकन प्राप्त करें, दवा के तथ्यों की जांच करें, या हमारे एआई कल्याण सहायक से बात करें। सभी अंतर्दृष्टि संरचित हैं और सुरक्षा फिल्टर द्वारा समर्थित हैं।",
+    symptomAssessment: "लक्षण मूल्यांकन",
+    askAIChat: "एआई चैट से पूछें",
+    runSymptomCheck: "लक्षण जाँच चलाएं",
+    lookupMedication: "दवा खोजें",
+    analyzeImage: "छवि का विश्लेषण करें",
+    dailyTips: "दैनिक निवारक स्वास्थ्य सुझाव",
+    tipCategory: "सुझाव श्रेणी",
+    recentActivity: "हाल की गतिविधि लॉग",
+    cardSymptomDesc: "एक संरचित नैदानिक मूल्यांकन रिपोर्ट तैयार करने के लिए लक्षणों को स्पष्ट करने वाली एक अनुकूलन प्रश्नावली में शामिल हों।",
+    cardMedDesc: "खुराक सीमा, जेनेरिक नाम, संभावित दवा पारस्परिक क्रिया और चेतावनी अस्वीकरण का विश्लेषण करें।",
+    cardVisionDesc: "दृष्टि विश्लेषण के लिए प्रिस्क्रिप्शन लेबल, दवा पैकेजिंग, या दिखाई देने वाले त्वचा संक्रमण विवरण अपलोड करें।",
+    consultations: "परामर्श",
+    chats: "चैट",
+    bookmarksSaved: "बुकमार्क और सहेजी गई जानकारी",
+
+    // Symptom Checker
+    clinicalSymptomAssessment: "नैदानिक लक्षण मूल्यांकन",
     enterSymptom: "अपने लक्षणों का विस्तार से वर्णन करें (जैसे 3 दिनों से बुखार)...",
     emergencyWarning: "गंभीर आपातकालीन चेतावनी",
     callEmergency: "आपातकालीन सेवाओं को कॉल करें (911)",
@@ -53,19 +145,66 @@ const translations = {
     loading: "विश्लेषण किया जा रहा है...",
     clear: "साफ़ करें",
     search: "खोजें",
-    savedBookmarks: "सहेजी गई सामग्री",
-    medicalDisclaimer: "नैदानिक सूचना मंच अस्वीकरण",
-    startAssessment: "लक्षण मूल्यांकन शुरू करें",
+    startIntake: "इंटेक शुरू करें",
+    intakeFollowUp: "इंटेक फॉलो-अप",
+    clinicalFollowUp: "नैदानिक फॉलो-अप",
+    nextQuestion: "अगला प्रश्न",
+    prevQuestion: "पिछला प्रश्न",
+    generateFinalAssessment: "अंतिम मूल्यांकन उत्पन्न करें",
+    symptomCheckerReport: "लक्षण जाँचक रिपोर्ट",
+    bookmarkReport: "रिपोर्ट बुकमार्क करें",
+    printSummary: "सारांश प्रिंट करें",
+    startNewAssessment: "नया मूल्यांकन शुरू करें",
+    restartChecker: "जाँचक पुनरारंभ करें",
+    selectOptionError: "जारी रखने के लिए कृपया एक उत्तर चुनें या टाइप करें।",
+
+    // AI Chat
+    aiHealthExploration: "एआई स्वास्थ्य अन्वेषण",
+    commonExplorations: "सामान्य स्वास्थ्य अन्वेषण",
+    askAssistant: "सामान्य स्वास्थ्य प्रश्न या लक्षण पूछें...",
     clearHistory: "इतिहास साफ़ करें",
-    recentActivity: "हाल की गतिविधि",
-    intakeReports: "इनटेक रिपोर्ट",
-    aiConversations: "एआई बातचीत",
+    speakResponse: "उत्तर बोलें",
+    stopSpeaking: "बोलना बंद करें",
+    thinking: "सोच रहा है और प्रतिक्रिया तैयार कर रहा है...",
+    send: "भेजें",
+
+    // Medications
+    medicationPortal: "दवा सूचना पोर्टल",
+    searchMedication: "दवा खोजें...",
+    recentSearches: "हाल की खोजें",
+    dosageLimits: "खुराक की सीमाएं",
+    activeIngredients: "सक्रिय सामग्री",
+    drugInteractions: "दवा पारस्परिक क्रिया",
+    sideEffects: "दुष्प्रभाव",
+    warnings: "चेतावनी और मतभेद",
+
+    // Visual Analyzer
+    visualHealthAnalyzer: "विजुअल स्वास्थ्य विश्लेषक",
+    visualUploadDesc: "विस्तृत एआई विश्लेषण के लिए दवा के लेबल, गोली की बोतल, या दिखाई देने वाली त्वचा की स्थिति की एक छवि अपलोड करें।",
+    category: "श्रेणी",
+    medicationLabel: "दवा का लेबल",
+    skinCondition: "त्वचा की स्थिति",
+    dragDropText: "अपनी छवि यहाँ खींचें और छोड़ें, या ब्राउज़ करने के लिए क्लिक करें",
+    analyzingImage: "छवि का विश्लेषण किया जा रहा है...",
+    visionAnalysisResult: "विजुअल विश्लेषण परिणाम",
+
+    // Bookmarks
+    savedBookmarks: "सहेजी गई सामग्री",
+    noBookmarks: "अभी तक कोई बुकमार्क की गई सामग्री नहीं है।",
+
+    // Settings
+    settingsCustomization: "सेटिंग्स और अनुकूलन",
     themeMode: "थीम मोड",
     activeTheme: "सक्रिय थीम",
+    lightMode: "लाइट मोड",
+    darkMode: "डार्क मोड",
+    dbManagement: "डेटाबेस प्रबंधन",
     clearSaved: "सहेजे गए इतिहास को साफ़ करें",
-    specifications: "प्लेटफ़ॉर्म विनिर्देशों"
+    clearSavedDesc: "यह स्थायी रूप से सभी स्थानीय परामर्श रिपोर्ट, बुकमार्क और चैट इतिहास को हटा देगा।",
+    deleteAllData: "सारा डेटा हटाएं"
   },
   mr: {
+    // Nav / Sidebar / Header
     dashboard: "डॅशबोर्ड",
     symptomChecker: "लक्षण तपासक",
     aiChat: "एआय चॅट Q&A",
@@ -74,8 +213,30 @@ const translations = {
     preventiveCare: "प्रतिबंधात्मक काळजी",
     bookmarks: "बुकमार्क",
     settings: "सेटिंग्ज",
-    askAssistant: "सामान्य आरोग्य प्रश्न किंवा लक्षणे विचारा...",
-    send: "पाठवा",
+    careHub: "क्युराहेल्थ एआय केअर हब",
+    safetyScanner: "स्थानिक 911 सुरक्षा स्कॅनर सक्रिय",
+
+    // Dashboard
+    encryptedCare: "एनक्रिप्टेड आणि गोपनीय एआय केअर",
+    heroTitle: "तुमच्या सेवेत डिजिटल आरोग्य बुद्धिमत्ता",
+    heroDesc: "त्वरित वैद्यकीय मूल्यमापन मिळवा, औषधांची माहिती तपासा किंवा आमच्या एआय कल्याण सहाय्यकाशी बोला। सर्व अंतर्दृष्टी संरचित आहेत आणि सुरक्षा फिल्टरद्वारे समर्थित आहेत।",
+    symptomAssessment: "लक्षण मूल्यमापन",
+    askAIChat: "एआय चॅट विचारा",
+    runSymptomCheck: "लक्षण तपासणी करा",
+    lookupMedication: "औषध शोधा",
+    analyzeImage: "प्रतिमेचे विश्लेषण करा",
+    dailyTips: "दैनिक प्रतिबंधात्मक आरोग्य टिप्स",
+    tipCategory: "टिप श्रेणी",
+    recentActivity: "अलीकडील क्रियाकलाप लॉग",
+    cardSymptomDesc: "एक संरचित क्लिनिकल मूल्यांकन अहवाल तयार करण्यासाठी लक्षणे स्पष्ट करणाऱ्या प्रश्नावलीमध्ये सहभागी व्हा।",
+    cardMedDesc: "डोस मर्यादा, जेनेरिक नावे, संभाव्य औषध परस्पर क्रिया आणि चेतावणी अस्वीकरणांचे विश्लेषण करा।",
+    cardVisionDesc: "दृष्टी विश्लेषणासाठी प्रिस्क्रिप्शन लेबल, औषध पॅकेजिंग किंवा त्वचा संसर्ग तपशील अपलोड करा।",
+    consultations: "सल्लामसलत",
+    chats: "चॅट्स",
+    bookmarksSaved: "बुकमार्क आणि जतन केलेली माहिती",
+
+    // Symptom Checker
+    clinicalSymptomAssessment: "क्लिनिकल लक्षण मूल्यमापन",
     enterSymptom: "तुमच्या लक्षणांचे तपशीलवार वर्णन करा (उदा. ३ दिवस ताप)...",
     emergencyWarning: "गंभीर आणीबाणीची चेतावणी",
     callEmergency: "आणीबाणी सेवांना कॉल करा (911)",
@@ -84,17 +245,63 @@ const translations = {
     loading: "विश्लेषण करत आहे...",
     clear: "साफ करा",
     search: "शोधा",
-    savedBookmarks: "बुकमार्क केलेले साहित्य",
-    medicalDisclaimer: "वैद्यकीय माहिती मंच अस्वीकरण",
-    startAssessment: "लक्षण मूल्यांकन सुरू करा",
+    startIntake: "तपासणी सुरू करा",
+    intakeFollowUp: "तपासणी फॉलो-अप",
+    clinicalFollowUp: "क्लिनिकल फॉलो-अप",
+    nextQuestion: "पुढील प्रश्न",
+    prevQuestion: "मागील प्रश्न",
+    generateFinalAssessment: "अंतिम मूल्यमापन तयार करा",
+    symptomCheckerReport: "लक्षण तपासक अहवाल",
+    bookmarkReport: "अहवाल बुकमार्क करा",
+    printSummary: "सारांश प्रिंट करा",
+    startNewAssessment: "नवीन मूल्यमापन सुरू करा",
+    restartChecker: "तपासक पुन्हा सुरू करा",
+    selectOptionError: "सुरू ठेवण्यासाठी कृपया एक उत्तर निवडा किंवा टाईप करा।",
+
+    // AI Chat
+    aiHealthExploration: "एआय आरोग्य अन्वेषण",
+    commonExplorations: "सामान्य आरोग्य अन्वेषण",
+    askAssistant: "सामान्य आरोग्य प्रश्न किंवा लक्षणे विचारा...",
     clearHistory: "इतिहास साफ करा",
-    recentActivity: "अलीकडील क्रियाकलाप",
-    intakeReports: "तपासणी अहवाल",
-    aiConversations: "एआय संभाषणे",
+    speakResponse: "उत्तर बोला",
+    stopSpeaking: "बोलणे थांबवा",
+    thinking: "विचार करत आहे आणि उत्तर तयार करत आहे...",
+    send: "पाठवा",
+
+    // Medications
+    medicationPortal: "औषध माहिती पोर्टल",
+    searchMedication: "औषध शोधा...",
+    recentSearches: "अलीकडील शोध",
+    dosageLimits: "डोस मर्यादा",
+    activeIngredients: "सक्रिय घटक",
+    drugInteractions: "औषध परस्पर क्रिया",
+    sideEffects: "दुष्परिणाम",
+    warnings: "इशारे आणि विरोधाभास",
+
+    // Visual Analyzer
+    visualHealthAnalyzer: "व्हिज्युअल आरोग्य विश्लेषक",
+    visualUploadDesc: "तपशीलवार एआय विश्लेषणासाठी औषध लेबल, गोळ्यांची बाटली किंवा त्वचेच्या स्थितीची प्रतिमा अपलोड करा।",
+    category: "श्रेणी",
+    medicationLabel: "औषध लेबल",
+    skinCondition: "त्वचेची स्थिती",
+    dragDropText: "तुमची प्रतिमा येथे ड्रॅग आणि ड्रॉप करा किंवा ब्राउझ करण्यासाठी क्लिक करा",
+    analyzingImage: "प्रतिमेचे विश्लेषण केले जात आहे...",
+    visionAnalysisResult: "व्हिज्युअल विश्लेषण परिणाम",
+
+    // Bookmarks
+    savedBookmarks: "बुकमार्क केलेले साहित्य",
+    noBookmarks: "अद्याप कोणतीही बुकमार्क केलेली सामग्री नाही।",
+
+    // Settings
+    settingsCustomization: "सेटिंग्ज आणि सानुकूलन",
     themeMode: "थीम मोड",
     activeTheme: "सक्रिय थीम",
+    lightMode: "लाइट मोड",
+    darkMode: "डार्क मोड",
+    dbManagement: "डेटाबेस व्यवस्थापन",
     clearSaved: "जतन केलेला इतिहास साफ करा",
-    specifications: "प्लॅटफॉर्म वैशिष्ट्ये"
+    clearSavedDesc: "यामुळे सर्व स्थानिक सल्लामसलत अहवाल, बुकमार्क आणि चॅट इतिहास कायमचे हटवले जातील।",
+    deleteAllData: "सर्व डेटा हटवा"
   }
 };
 

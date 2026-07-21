@@ -25,7 +25,7 @@ const AUTO_SUGGESTIONS = [
 ];
 
 export default function MedicationLookup() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState(null);
@@ -106,8 +106,7 @@ export default function MedicationLookup() {
             <Pill className="w-8 h-8" />
           </div>
           <div>
-            <h2 className="text-xl font-bold dark:text-white font-sans">Medication Information Lookup</h2>
-            <p className="text-xs text-slate-400">Search generic or brand names to find dosages, side effects, and warning tags</p>
+            <h2 className="text-xl font-bold dark:text-white font-sans">{t('medicationPortal')}</h2>
           </div>
         </div>
 
@@ -124,7 +123,7 @@ export default function MedicationLookup() {
             <input
               type="text"
               className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200/50 dark:border-slate-800/40 bg-slate-500/5 text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm focus:outline-none focus:ring-1 focus:ring-indigoaccent-500 transition-all"
-              placeholder="Enter medication name (e.g. Ibuprofen, Metformin)..."
+              placeholder={t('searchMedication')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -135,7 +134,7 @@ export default function MedicationLookup() {
             className="px-6 py-3 bg-indigoaccent-600 hover:bg-indigoaccent-500 text-white font-semibold text-sm rounded-xl transition-all shadow-lg hover:shadow-glow-indigo hover:scale-[1.02] cursor-pointer flex items-center space-x-1.5"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
-            <span>Search</span>
+            <span>{t('search')}</span>
           </button>
         </form>
 
@@ -160,7 +159,7 @@ export default function MedicationLookup() {
         <div className="lg:col-span-3 space-y-4">
           <div className="glass-panel p-4">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center">
-              <History className="w-3.5 h-3.5 mr-1.5" /> Recent Queries
+              <History className="w-3.5 h-3.5 mr-1.5" /> {t('recentSearches')}
             </h3>
             {recentSearches.length === 0 ? (
               <p className="text-[11px] text-slate-400 py-2">No medication searched recently.</p>
@@ -192,7 +191,7 @@ export default function MedicationLookup() {
                 className="glass-panel p-12 flex flex-col items-center justify-center text-center"
               >
                 <Loader2 className="w-8 h-8 text-indigoaccent-500 animate-spin mb-4" />
-                <p className="text-sm font-semibold dark:text-white">Retrieving Clinical Facts...</p>
+                <p className="text-sm font-semibold dark:text-white">{t('loading')}</p>
                 <p className="text-xs text-slate-400 mt-1">Sourcing pharmacological side effects and interaction warnings.</p>
               </motion.div>
             ) : details ? (
@@ -249,7 +248,7 @@ export default function MedicationLookup() {
                   {/* Dosage */}
                   <div>
                     <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 font-sans flex items-center">
-                      <Info className="w-3.5 h-3.5 mr-1.5" /> Typical Dosage Notes
+                      <Info className="w-3.5 h-3.5 mr-1.5" /> {t('dosageLimits')}
                     </h4>
                     <p className="p-4 bg-slate-500/5 rounded-xl border border-slate-200/30 dark:border-slate-800/30 text-xs md:text-sm text-slate-700 dark:text-slate-350 leading-relaxed font-sans">
                       {details.typical_dosage}
@@ -261,7 +260,7 @@ export default function MedicationLookup() {
                     {/* Common Side Effects */}
                     <div>
                       <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 font-sans flex items-center">
-                        <CheckCircle className="w-3.5 h-3.5 text-green-500 mr-1.5" /> Common / Mild Side Effects
+                        <CheckCircle className="w-3.5 h-3.5 text-green-500 mr-1.5" /> {t('sideEffects')}
                       </h4>
                       <ul className="space-y-2">
                         {details.common_side_effects.map((se, i) => (
@@ -276,7 +275,7 @@ export default function MedicationLookup() {
                     {/* Serious Side Effects */}
                     <div>
                       <h4 className="text-xs font-semibold text-rose-500 uppercase tracking-wider mb-3 font-sans flex items-center">
-                        <ShieldAlert className="w-3.5 h-3.5 mr-1.5 animate-pulse" /> Serious Side Effects (Call Help)
+                        <ShieldAlert className="w-3.5 h-3.5 mr-1.5 animate-pulse" /> {t('warnings')}
                       </h4>
                       <ul className="space-y-2">
                         {details.serious_side_effects.map((se, i) => (

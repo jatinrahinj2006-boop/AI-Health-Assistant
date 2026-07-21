@@ -177,7 +177,7 @@ export default function AIChat({ onTriggerEmergency }) {
             <div className="p-3 bg-indigoaccent-500/10 text-indigoaccent-500 rounded-full w-fit mx-auto mb-3">
               <Sparkles className="w-6 h-6 animate-pulse" />
             </div>
-            <h3 className="text-sm font-bold dark:text-white mb-4">Common Health Explorations</h3>
+            <h3 className="text-sm font-bold dark:text-white mb-4">{t('commonExplorations')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-xl mx-auto px-4">
               {PRESETS.map((preset) => (
                 <button
@@ -241,7 +241,7 @@ export default function AIChat({ onTriggerEmergency }) {
               <Loader2 className="w-4 h-4 animate-spin" />
             </div>
             <div className="p-4 rounded-2xl glass-panel border border-slate-200/40 dark:border-slate-800/20 text-slate-400 text-xs flex items-center space-x-2">
-              <span>Thinking and structuring response...</span>
+              <span>{t('thinking')}</span>
             </div>
           </div>
         )}

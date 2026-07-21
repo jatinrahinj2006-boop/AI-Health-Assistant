@@ -17,8 +17,10 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../utils/api';
 import StructuredResultCard from './StructuredResultCard';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ImageAnalysis({ onTriggerEmergency }) {
+  const { t } = useLanguage();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [category, setCategory] = useState('medication_packaging'); // 'medication_packaging' or 'skin_condition'
@@ -148,8 +150,8 @@ export default function ImageAnalysis({ onTriggerEmergency }) {
               <Camera className="w-8 h-8" />
             </div>
             <div>
-              <h2 className="text-xl font-bold dark:text-white font-sans">Visual Health Analyzer</h2>
-              <p className="text-xs text-slate-400">Upload pill packaging, label contents, or visible skin conditions for diagnostic intelligence</p>
+              <h2 className="text-xl font-bold dark:text-white font-sans">{t('visualHealthAnalyzer')}</h2>
+              <p className="text-xs text-slate-400">{t('visualUploadDesc')}</p>
             </div>
           </div>
 
@@ -163,7 +165,7 @@ export default function ImageAnalysis({ onTriggerEmergency }) {
                   : 'border-slate-200/50 dark:border-slate-800/40 text-slate-500 dark:text-slate-400 hover:bg-slate-500/5'
               }`}
             >
-              Medicine Packaging / Pill
+              {t('medicationLabel')}
             </button>
             <button
               onClick={() => setCategory('skin_condition')}
@@ -173,7 +175,7 @@ export default function ImageAnalysis({ onTriggerEmergency }) {
                   : 'border-slate-200/50 dark:border-slate-800/40 text-slate-500 dark:text-slate-400 hover:bg-slate-500/5'
               }`}
             >
-              Visible Skin Condition
+              {t('skinCondition')}
             </button>
           </div>
 
@@ -200,8 +202,7 @@ export default function ImageAnalysis({ onTriggerEmergency }) {
                 <div className="p-4 bg-amber-500/10 rounded-full text-amber-500 mb-4 hover:scale-105 transition-all">
                   <Upload className="w-8 h-8" />
                 </div>
-                <span className="text-sm font-bold dark:text-white mb-1">Drag and Drop Image Here</span>
-                <span className="text-xs text-slate-400 mb-4">Supports PNG, JPG, or WEBP (max 5MB)</span>
+                <span className="text-sm font-bold dark:text-white mb-1">{t('dragDropText')}</span>
                 <span className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs rounded-xl shadow transition-all">
                   Browse Files
                 </span>
@@ -240,11 +241,11 @@ export default function ImageAnalysis({ onTriggerEmergency }) {
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Analyzing Visuals...</span>
+                      <span>{t('loading')}</span>
                     </>
                   ) : (
                     <>
-                      <span>Submit Image for Analysis</span>
+                      <span>{t('submit')}</span>
                       <ChevronRight className="w-4 h-4" />
                     </>
                   )}
