@@ -24,7 +24,7 @@ const cardVariants = {
 
 export default function Dashboard({ onStartSymptomCheck }) {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [dailyTips, setDailyTips] = useState([]);
   const [recentConsults, setRecentConsults] = useState([]);
   const [recentChats, setRecentChats] = useState([]);
@@ -39,7 +39,7 @@ export default function Dashboard({ onStartSymptomCheck }) {
     const fetchTips = async () => {
       setLoadingTips(true);
       try {
-        const data = await api.getHealthTips(tipCategory);
+        const data = await api.getHealthTips(tipCategory, language);
         setDailyTips(data.tips || []);
         setTipsSource(data.source || "live");
       } catch (err) {
@@ -49,7 +49,7 @@ export default function Dashboard({ onStartSymptomCheck }) {
       }
     };
     fetchTips();
-  }, [tipCategory]);
+  }, [tipCategory, language]);
 
   useEffect(() => {
     // Load recent consults from localStorage

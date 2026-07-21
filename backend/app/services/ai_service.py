@@ -204,16 +204,43 @@ def generate_mock_medication(name: str) -> MedicationInfo:
         source="mock"
     )
 
-def generate_mock_tips(category: str) -> List[HealthTip]:
-    return [
-        HealthTip(
-            title=f"Consistent {category} Schedule",
-            content=f"Going to sleep or exercising at identical times daily builds reliable circadian cycles.",
-            category=category
-        ),
-        HealthTip(
-            title=f"Hydration & {category}",
-            content="Water consumption optimizes cellular functions during active periods.",
-            category=category
-        )
-    ]
+def generate_mock_tips(category: str, language: str = "en") -> List[HealthTip]:
+    if language == "hi":
+        return [
+            HealthTip(
+                title=f"नियमित {category} दिनचर्या",
+                content=f"दैनिक समान समय पर {category} करने से शरीर का प्राकृतिक चक्र बेहतर होता है।",
+                category=category
+            ),
+            HealthTip(
+                title=f"हाइड्रेशन और {category}",
+                content="सक्रिय अवधियों के दौरान पानी का पर्याप्त सेवन शारीरिक कार्यों को अनुकूलित करता है।",
+                category=category
+            )
+        ]
+    elif language == "mr":
+        return [
+            HealthTip(
+                title=f"नियमित {category} वेळापत्रक",
+                content=f"दररोज एकाच वेळी {category} केल्याने शरीराचे नैसर्गिक चक्र सुधारते.",
+                category=category
+            ),
+            HealthTip(
+                title=f"हायड्रेशन आणि {category}",
+                content="सक्रिय कालावधीत पाणी पिण्यामुळे शरीराची कार्यक्षमता वाढते.",
+                category=category
+            )
+        ]
+    else:
+        return [
+            HealthTip(
+                title=f"Consistent {category} Schedule",
+                content=f"Going to sleep or exercising at identical times daily builds reliable circadian cycles.",
+                category=category
+            ),
+            HealthTip(
+                title=f"Hydration & {category}",
+                content="Water consumption optimizes cellular functions during active periods.",
+                category=category
+            )
+        ]

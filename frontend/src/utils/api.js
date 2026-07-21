@@ -81,9 +81,9 @@ export const api = {
     });
   },
 
-  getHealthTips: (category) => {
+  getHealthTips: (category, language = "en") => {
     const cat = encodeURIComponent(category);
-    return apiRequest(`/api/health-tips?category=${cat}`, {
+    return apiRequest(`/api/health-tips?category=${cat}&language=${language}`, {
       method: 'GET',
     });
   },

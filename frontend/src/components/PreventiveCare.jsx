@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../utils/api';
+import { useLanguage } from '../context/LanguageContext';
 
 const AGE_GROUPS = [
   { id: '20s', label: '20s - 30s', range: '20-39' },
@@ -47,6 +48,7 @@ const SCREENINGS = {
 };
 
 export default function PreventiveCare() {
+  const { language, t } = useLanguage();
   const [selectedAge, setSelectedAge] = useState('20s');
   const [category, setCategory] = useState('General');
   const [tips, setTips] = useState([]);
@@ -58,7 +60,7 @@ export default function PreventiveCare() {
     const fetchTips = async () => {
       setLoading(true);
       try {
-        const data = await api.getHealthTips(category);
+        const data = await api.getHealthTips(category, language);
         setTips(data.tips || []);
       } catch (err) {
         console.error('Failed to load wellness tips', err);
@@ -67,7 +69,7 @@ export default function PreventiveCare() {
       }
     };
     fetchTips();
-  }, [category]);
+  }, [category, language]);
 
   useEffect(() => {
     // Load bookmarks
@@ -122,7 +124,7 @@ export default function PreventiveCare() {
             <ClipboardCheck className="w-8 h-8" />
           </div>
           <div>
-            <h2 className="text-xl font-bold dark:text-white font-sans">Preventive Care & Wellness Center</h2>
+            <h2 className="text-xl font-bold dark:text-white font-sans">{t('preventiveCare')}</h2>
             <p className="text-xs text-slate-400">Access personalized clinical screenings guidelines and daily evidence-based health actions</p>
           </div>
         </div>
@@ -135,7 +137,7 @@ export default function PreventiveCare() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
                 <Shield className="w-5 h-5 text-health-500" />
-                <h3 className="text-base font-bold dark:text-white">Recommended Screenings</h3>
+                <h3 className="text-base font-bold dark:text-white">{t('preventiveCare')}</h3>
               </div>
               <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-500/5 px-2 py-1 rounded">Clinical Guidelines</span>
             </div>
@@ -196,7 +198,7 @@ export default function PreventiveCare() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Heart className="w-5 h-5 text-rose-500" />
-                <h3 className="text-base font-bold dark:text-white">wellness Habits</h3>
+                <h3 className="text-base font-bold dark:text-white">{t('dailyTips')}</h3>
               </div>
 
               {/* Toggles */}
@@ -219,7 +221,7 @@ export default function PreventiveCare() {
               {loading ? (
                 <div className="space-y-4 py-8 flex flex-col items-center justify-center">
                   <Loader2 className="w-6 h-6 text-indigoaccent-500 animate-spin" />
-                  <span className="text-xs text-slate-400">Loading daily habits...</span>
+                  <span className="text-xs text-slate-400">{t('loading')}</span>
                 </div>
               ) : (
                 <div className="space-y-4">
