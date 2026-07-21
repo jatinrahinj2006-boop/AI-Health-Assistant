@@ -123,12 +123,17 @@ async def symptom_check_start(payload: SymptomCheckerStartRequest):
             system_instruction=SYSTEM_SYMPTOM_START_PROMPT + lang_instruction
         )
         
-        # Enforce that start NEVER returns done=True
+        # Enforce that start NEVER returns done=True (unless it is a medical emergency)
         if result.done or result.assessment is not None:
-            result.done = False
-            result.assessment = None
-            if not result.next_question:
-                result.next_question = MOCK_QUESTIONS[0]
+            is_llm_emergency = (
+                result.assessment is not None and 
+                getattr(result.assessment, 'is_emergency', False)
+            )
+            if not is_llm_emergency:
+                result.done = False
+                result.assessment = None
+                if not result.next_question:
+                    result.next_question = MOCK_QUESTIONS[0]
                 
         return result
     except Exception as e:
@@ -204,13 +209,18 @@ async def symptom_check_follow_up(payload: SymptomCheckerFollowUpRequest):
             system_instruction=SYSTEM_SYMPTOM_PROCESS_PROMPT + lang_instruction
         )
         
-        # Enforce minimum of 2 follow-up questions before allowing done=True
+        # Enforce minimum of 2 follow-up questions before allowing done=True (unless it is a medical emergency)
         if len(payload.history) < 2:
             if result.done or result.assessment is not None:
-                result.done = False
-                result.assessment = None
-                if not result.next_question:
-                    result.next_question = MOCK_QUESTIONS[min(len(payload.history), len(MOCK_QUESTIONS)-1)]
+                is_llm_emergency = (
+                    result.assessment is not None and 
+                    getattr(result.assessment, 'is_emergency', False)
+                )
+                if not is_llm_emergency:
+                    result.done = False
+                    result.assessment = None
+                    if not result.next_question:
+                        result.next_question = MOCK_QUESTIONS[min(len(payload.history), len(MOCK_QUESTIONS)-1)]
                     
         return result
     except Exception as e:

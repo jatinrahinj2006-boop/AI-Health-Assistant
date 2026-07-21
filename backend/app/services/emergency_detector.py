@@ -24,7 +24,12 @@ STROKE_REGEX = re.compile(
 )
 
 BREATHING_REGEX = re.compile(
-    r"\b(shortness of breath|difficulty breathing|cannot breathe|can\'t breathe|gasping|suffocating|severe asthma|cyanosis|choking)\b",
+    r"\b(shortness of breath|difficulty breathing|trouble breathing|struggling to breathe|can(?:'t| ?not) breathe|hard to breathe|gasping|suffocating|severe asthma|cyanosis|choking)\b",
+    re.IGNORECASE
+)
+
+ANAPHYLAXIS_REGEX = re.compile(
+    r"\b(lips? (?:feel |are |is )?(?:tight|swelling|swollen)|throat (?:feels? |is )?(?:closing|tightening|swelling)|face (?:is |feels )?swelling|tongue swelling|hives.*breathing|allergic reaction.*(?:breath|swell))\b",
     re.IGNORECASE
 )
 
@@ -71,6 +76,8 @@ def detect_emergency(text: str) -> Tuple[bool, Optional[str]]:
         reasons.append("stroke indicators (facial droop, slurred speech, or weakness)")
     if BREATHING_REGEX.search(lower_text):
         reasons.append("severe respiratory distress or shortness of breath")
+    if ANAPHYLAXIS_REGEX.search(lower_text):
+        reasons.append("signs of severe allergic reaction or anaphylaxis (swelling or tightness)")
     if BLEEDING_REGEX.search(lower_text):
         reasons.append("severe, uncontrolled bleeding")
     if CONSCIOUSNESS_REGEX.search(lower_text):
@@ -107,5 +114,11 @@ if __name__ == "__main__":
     assert is_em is False, "Failed to ignore informational query"
     assert msg is None, "Informational query should return None"
     print("PASS: Test 3: Informational context ignored successfully.")
+
+    # Test 4: Trouble breathing and lips tight (Anaphylaxis checks)
+    is_em, msg = detect_emergency("Trouble breathing and my lips feel tight")
+    assert is_em is True, "Failed anaphylaxis check"
+    assert "allergic" in msg or "breathing" in msg, "Failed anaphylaxis warning message content"
+    print("PASS: Test 4: Anaphylaxis symptoms detected successfully.")
     
     print("All tests completed successfully!")
