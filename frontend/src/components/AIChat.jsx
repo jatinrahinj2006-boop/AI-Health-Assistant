@@ -195,7 +195,6 @@ export default function AIChat({ onTriggerEmergency }) {
         <div className="space-y-4">
           {messages.map((msg, index) => {
             const isUser = msg.role === 'user';
-            const isExpanded = expandedAssessmentId === index;
             
             return (
               <motion.div
