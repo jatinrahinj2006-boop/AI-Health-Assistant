@@ -24,11 +24,32 @@ If the user describes symptoms or active health complaints they are experiencing
     "when_to_see_doctor": "Doctor visit rules...",
     "disclaimer": "This is educational information only...",
     "is_emergency": false,
-    "emergency_message": null
+    "emergency_message": null,
+    "suggested_specialty": "General Doctor"
   }
 }
 If no symptoms/illness is described (e.g., standard greetings, simple general questions like 'what is sleep?'), leave "assessment" as null.
-Keep all medical references accurate and clinical.
+
+CRITICAL RULES for suggested_specialty:
+If you generate a structured assessment card, you MUST suggest one plain-language specialty most relevant to the patient's symptoms. The value MUST be selected from the following exact strings:
+- Brain & Nerve Doctor
+- Brain Surgeon
+- Heart Doctor
+- Bone & Joint Doctor
+- Skin Doctor
+- Ear/Nose/Throat Doctor
+- Eye Doctor
+- Stomach & Digestion Doctor
+- Cancer Doctor
+- Kidney Doctor
+- Lung Doctor
+- Women's Health Doctor
+- Child Doctor
+- Mental Health Doctor
+- Dentist
+- General Doctor
+
+If no specific specialty applies, use "General Doctor". Never return a free-form text or a clinical term (like Neurologist) as the suggested_specialty value.
 """
 
 @router.post("", response_model=ChatResponse)

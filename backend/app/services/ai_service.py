@@ -156,7 +156,8 @@ def generate_mock_health_response(symptom: str) -> StructuredHealthResponse:
             when_to_see_doctor="See a doctor if symptoms persist past 10 days or worsen.",
             disclaimer="Simulated assessment for demonstration purposes only. Consult a doctor.",
             is_emergency=False,
-            source="mock"
+            source="mock",
+            suggested_specialty="Lung Doctor"
         )
     return StructuredHealthResponse(
         summary=f"Assessment for report '{symptom}'. Non-specific general complaints identified.",
@@ -166,7 +167,8 @@ def generate_mock_health_response(symptom: str) -> StructuredHealthResponse:
         when_to_see_doctor="See a clinician if symptoms affect daily routines.",
         disclaimer="Simulated assessment for demonstration purposes only. Consult a doctor.",
         is_emergency=False,
-        source="mock"
+        source="mock",
+        suggested_specialty="General Doctor"
     )
 
 def generate_mock_vision_assessment(category: str) -> StructuredHealthResponse:
@@ -179,7 +181,8 @@ def generate_mock_vision_assessment(category: str) -> StructuredHealthResponse:
             when_to_see_doctor="Report immediately if hives or swelling occurs.",
             disclaimer="Simulated visual analysis. Consult your prescribing clinician.",
             is_emergency=False,
-            source="mock"
+            source="mock",
+            suggested_specialty="General Doctor"
         )
     return StructuredHealthResponse(
         summary="Vision simulation: Red localized rash indicating contact dermatitis or a localized reaction.",
@@ -189,7 +192,8 @@ def generate_mock_vision_assessment(category: str) -> StructuredHealthResponse:
         when_to_see_doctor="Consult if not resolved in 5 days.",
         disclaimer="Simulated visual analysis. Consult a physician.",
         is_emergency=False,
-        source="mock"
+        source="mock",
+        suggested_specialty="Skin Doctor"
     )
 
 def generate_mock_medication(name: str) -> MedicationInfo:

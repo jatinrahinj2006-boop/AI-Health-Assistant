@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import logging
 from app import config
-from app.routers import chat, symptom_checker, medication, health_tips, image_analysis
+from app.routers import chat, symptom_checker, medication, health_tips, image_analysis, nearby_specialists
 
 logger = logging.getLogger("app.startup")
 
@@ -87,6 +87,7 @@ app.include_router(symptom_checker.router)
 app.include_router(medication.router)
 app.include_router(health_tips.router)
 app.include_router(image_analysis.router)
+app.include_router(nearby_specialists.router)
 
 @app.get("/health")
 async def health_status():

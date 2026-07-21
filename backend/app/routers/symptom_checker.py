@@ -53,9 +53,32 @@ If you have collected sufficient details (typically after 2 to 4 questions have 
     "when_to_see_doctor": "Instructions on seeing a doctor...",
     "disclaimer": "This is educational information...",
     "is_emergency": false,
-    "emergency_message": null
+    "emergency_message": null,
+    "suggested_specialty": "General Doctor"
   }
 }
+
+CRITICAL RULES for suggested_specialty:
+If you return a final assessment (done=true), you MUST suggest one plain-language specialty that is most relevant to the patient's condition. The value MUST be selected from the following exact strings:
+- Brain & Nerve Doctor
+- Brain Surgeon
+- Heart Doctor
+- Bone & Joint Doctor
+- Skin Doctor
+- Ear/Nose/Throat Doctor
+- Eye Doctor
+- Stomach & Digestion Doctor
+- Cancer Doctor
+- Kidney Doctor
+- Lung Doctor
+- Women's Health Doctor
+- Child Doctor
+- Mental Health Doctor
+- Dentist
+- General Doctor
+
+If no specific specialty applies, use "General Doctor". Never return a free-form text or a clinical term (like Neurologist) as the suggested_specialty value.
+"""
 
 CRITICAL RULE: If the history contains fewer than 2 answered questions, you MUST continue asking questions. Set "done" to false, "next_question" to a new relevant follow-up question, and "assessment" to null.
 If you suspect a medical emergency, set done=true, next_question=null, is_emergency=true, and provide emergency_message instructions immediately. Keep questions clear and concise.

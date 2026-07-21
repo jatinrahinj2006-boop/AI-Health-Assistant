@@ -9,11 +9,14 @@ import {
   ShieldCheck,
   Bookmark,
   Download,
-  FileText
+  FileText,
+  Navigation
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function StructuredResultCard({ 
   result, 
@@ -24,6 +27,8 @@ export default function StructuredResultCard({
   isBookmarked = false
 }) {
   const cardRef = useRef(null);
+  const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const {
     summary = "",
@@ -33,8 +38,33 @@ export default function StructuredResultCard({
     when_to_see_doctor = "",
     disclaimer = "",
     is_emergency = false,
-    source = "live"
+    source = "live",
+    suggested_specialty = ""
   } = result || {};
+
+  const getTranslatedSpecialty = (spec) => {
+    if (!spec) return '';
+    const mappings = {
+      "Brain & Nerve Doctor": "spec_neurologist",
+      "Brain Surgeon": "spec_neurosurgeon",
+      "Heart Doctor": "spec_cardiologist",
+      "Bone & Joint Doctor": "spec_orthopedist",
+      "Skin Doctor": "spec_dermatologist",
+      "Ear/Nose/Throat Doctor": "spec_ent",
+      "Eye Doctor": "spec_ophthalmologist",
+      "Stomach & Digestion Doctor": "spec_gastroenterologist",
+      "Cancer Doctor": "spec_oncologist",
+      "Kidney Doctor": "spec_nephrologist",
+      "Lung Doctor": "spec_pulmonologist",
+      "Women's Health Doctor": "spec_gynecologist",
+      "Child Doctor": "spec_pediatrician",
+      "Mental Health Doctor": "spec_psychiatrist",
+      "Dentist": "spec_dentist",
+      "General Doctor": "spec_general_physician"
+    };
+    const key = mappings[spec];
+    return key ? t(key) : spec;
+  };
 
   const isMock = source === 'mock';
 
@@ -270,6 +300,21 @@ export default function StructuredResultCard({
             {when_to_see_doctor}
           </p>
         </div>
+
+        {/* 4b. Find Specialist Referral Button */}
+        {suggested_specialty && (
+          <div className="flex justify-center pt-2 print:hidden">
+            <button
+              onClick={() => {
+                navigate(`/specialists?specialty=${encodeURIComponent(suggested_specialty)}`);
+              }}
+              className="px-5 py-2.5 bg-health-500 hover:bg-health-600 text-white rounded-xl text-xs font-semibold hover:shadow-glow-teal transition-all flex items-center space-x-1.5 cursor-pointer shadow-md hover:scale-[1.02]"
+            >
+              <Navigation className="w-4 h-4" />
+              <span>{t('findNearbyCareBtn')}: {getTranslatedSpecialty(suggested_specialty)}</span>
+            </button>
+          </div>
+        )}
 
         {/* 5. Fine Disclaimer */}
         <div className="text-[10px] text-slate-400 dark:text-slate-500 italic text-center pt-4 border-t border-slate-200/20 dark:border-slate-850">
