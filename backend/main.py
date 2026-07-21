@@ -88,6 +88,18 @@ app.include_router(medication.router)
 app.include_router(health_tips.router)
 app.include_router(image_analysis.router)
 
+@app.get("/health")
+async def health_status():
+    """
+    Standard platform health monitor.
+    """
+    return {
+        "status": "healthy",
+        "env": config.ENV,
+        "llm_provider": config.LLM_PROVIDER,
+        "groq_configured": bool(config.GROQ_API_KEY)
+    }
+
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
@@ -109,18 +121,6 @@ if os.path.exists(static_dir):
         if os.path.exists(index_path):
             return FileResponse(index_path)
         return {"message": "AegisHealth API Online"}
-
-@app.get("/health")
-async def health_status():
-    """
-    Standard platform health monitor.
-    """
-    return {
-        "status": "healthy",
-        "env": config.ENV,
-        "llm_provider": config.LLM_PROVIDER,
-        "groq_configured": bool(config.GROQ_API_KEY)
-    }
 
 if __name__ == "__main__":
     import os
