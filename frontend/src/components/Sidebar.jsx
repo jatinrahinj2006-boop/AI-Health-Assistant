@@ -18,20 +18,22 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme, isDark } = useTheme();
+  const { t } = useLanguage();
 
   const menuItems = [
-    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/symptoms', label: 'Symptom Checker', icon: Stethoscope },
-    { path: '/chat', label: 'AI Chat Q&A', icon: MessageSquare },
-    { path: '/medication', label: 'Medications', icon: Pill },
-    { path: '/vision', label: 'Visual Analyzer', icon: Camera },
-    { path: '/preventive', label: 'Preventive Care', icon: Heart },
-    { path: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
-    { path: '/settings', label: 'Settings', icon: Settings },
+    { path: '/', label: t('dashboard'), icon: LayoutDashboard },
+    { path: '/symptoms', label: t('symptomChecker'), icon: Stethoscope },
+    { path: '/chat', label: t('aiChat'), icon: MessageSquare },
+    { path: '/medication', label: t('medicationInfo'), icon: Pill },
+    { path: '/vision', label: t('visualAnalyzer'), icon: Camera },
+    { path: '/preventive', label: t('preventiveCare'), icon: Heart },
+    { path: '/bookmarks', label: t('bookmarks'), icon: Bookmark },
+    { path: '/settings', label: t('settings'), icon: Settings },
   ];
 
   const sidebarVariants = {
