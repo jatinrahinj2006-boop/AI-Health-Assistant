@@ -13,7 +13,6 @@ class StructuredHealthResponse(BaseModel):
     is_emergency: bool = Field(..., description="Set to True if symptoms represent a critical medical emergency")
     emergency_message: Optional[str] = Field(None, description="Immediate warnings or actions to take if is_emergency is True")
     source: str = Field("live", description="'live' or 'mock' data source indicator")
-    suggested_specialty: Optional[str] = Field(None, description="Recommended plain-language medical specialist choice from the fixed set if relevant")
 
 class ChatQA(BaseModel):
     role: str = Field(..., description="'user' or 'assistant'")

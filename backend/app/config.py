@@ -34,7 +34,3 @@ else:
 
 # Server port for deployments
 PORT = int(os.getenv("PORT", 8000))
-
-# Google Places API configuration
-GOOGLE_PLACES_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY", "")
-MAX_MONTHLY_PLACES_CALLS = int(os.getenv("MAX_MONTHLY_PLACES_CALLS", 2500))

@@ -17,7 +17,6 @@ import ImageAnalysis from './components/ImageAnalysis';
 import PreventiveCare from './components/PreventiveCare';
 import Bookmarks from './components/Bookmarks';
 import SettingsPage from './components/Settings';
-import NearbySpecialists from './components/NearbySpecialists';
 import { useEmergencyCheck } from './hooks/useEmergencyCheck';
 
 // Reusable transition wrapper for page route animations
@@ -161,12 +160,6 @@ function AppContent() {
               <Route path="/settings" element={
                 <PageWrapper>
                   <SettingsPage />
-                </PageWrapper>
-              } />
-
-              <Route path="/specialists" element={
-                <PageWrapper>
-                  <NearbySpecialists />
                 </PageWrapper>
               } />
             </Routes>

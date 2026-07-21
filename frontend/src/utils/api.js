@@ -98,17 +98,4 @@ export const api = {
       body: formData,
     });
   },
-
-  searchNearbySpecialists: (latitude, longitude, address, specialty, radiusKm = 10.0) => {
-    return apiRequest('/api/nearby-specialists', {
-      method: 'POST',
-      body: JSON.stringify({
-        latitude,
-        longitude,
-        address,
-        specialty,
-        radius_km: radiusKm
-      }),
-    });
-  },
 };

@@ -14,8 +14,7 @@ import {
   Sun, 
   Moon,
   Activity,
-  Shield,
-  MapPin
+  Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
@@ -33,7 +32,6 @@ export default function Sidebar() {
     { path: '/medication', label: t('medicationInfo'), icon: Pill },
     { path: '/vision', label: t('visualAnalyzer'), icon: Camera },
     { path: '/preventive', label: t('preventiveCare'), icon: Heart },
-    { path: '/specialists', label: t('nearbySpecialists'), icon: MapPin },
     { path: '/bookmarks', label: t('bookmarks'), icon: Bookmark },
     { path: '/settings', label: t('settings'), icon: Settings },
   ];
