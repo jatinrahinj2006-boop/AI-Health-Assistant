@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    @apply font-sans antialiased bg-slate-50 text-slate-900 transition-colors duration-300;
+  }
+  
+  body.dark {
+    @apply bg-darkbg-base text-[#f3f4f6];
+  }
+}
+
+@layer components {
+  /* Glassmorphic Panel Styles */
+  .glass-panel {
+    @apply backdrop-blur-lg bg-white/80 border border-slate-200/50 shadow-glass-light rounded-2xl transition-all duration-300;
+  }
+
+  .dark .glass-panel {
+    @apply backdrop-blur-lg bg-slate-950/60 border border-slate-800/40 shadow-glass-dark rounded-2xl transition-all duration-300;
+  }
+
+  /* Interactive Glass Cards */
+  .glass-card {
+    @apply backdrop-blur-md bg-white/40 border border-slate-200/20 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-white/60 hover:-translate-y-0.5;
+  }
+
+  .dark .glass-card {
+    @apply backdrop-blur-md bg-slate-900/40 border border-slate-800/30 shadow-glass-dark transition-all duration-300 hover:bg-slate-900/60 hover:-translate-y-0.5;
+  }
+  
+  /* Text Highlight Gradients */
+  .text-glow-teal {
+    background: linear-gradient(135deg, #2dd4bf, #0d9488);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-glow-indigo {
+    background: linear-gradient(135deg, #a78bfa, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Animations & Transitions */
+.glow-effect-teal {
+  box-shadow: 0 0 30px 2px rgba(20, 184, 166, 0.08);
+}
+
+.glow-effect-indigo {
+  box-shadow: 0 0 30px 2px rgba(139, 92, 246, 0.08);
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+  transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(30, 41, 59, 0.7);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.7);
+}
+
+/* Custom CSS pulse animation for live indicators */
+@keyframes soft-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+.pulse-indicator {
+  animation: soft-pulse 2s infinite ease-in-out;
+}
