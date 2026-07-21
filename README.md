@@ -120,8 +120,8 @@ Ensure you have the Google Cloud CLI installed. Execute from the root directory:
 # Set your GCP Project ID
 export PROJECT_ID="your-gcp-project-id"
 
-# Build the Docker image locally for Google Artifact Registry
-docker build -t gcr.io/$PROJECT_ID/aegishealth-backend ./backend
+# Build the Docker image locally from the project root directory
+docker build -t gcr.io/$PROJECT_ID/aegishealth-backend -f backend/Dockerfile .
 ```
 
 ### 2. Push Image to Google Container Registry
