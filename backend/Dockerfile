@@ -1,5 +1,5 @@
 # Stage 1: Build the React frontend SPA
-FROM node:18-alpine as frontend-builder
+FROM node:20-alpine as frontend-builder
 
 WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json ./
