@@ -110,38 +110,6 @@ The web client will mount at `http://localhost:5173`. In local dev, Vite automat
 
 ---
 
-## ☁️ Google Cloud Run Deployment Steps
-
-CuraHealth is fully containerized. To deploy the FastAPI service to Google Cloud Run:
-
-### 1. Build and Tag the Docker Image
-Ensure you have the Google Cloud CLI installed. Execute from the root directory:
-```bash
-# Set your GCP Project ID
-export PROJECT_ID="your-gcp-project-id"
-
-# Build the Docker image locally from the project root directory
-docker build -t gcr.io/$PROJECT_ID/CuraHealth-backend -f backend/Dockerfile .
-```
-
-### 2. Push Image to Google Container Registry
-```bash
-gcloud auth configure-docker
-docker push gcr.io/$PROJECT_ID/CuraHealth-backend
-```
-
-### 3. Deploy to Cloud Run
-Deploy the container, setting the Groq API configuration parameters:
-```bash
-gcloud run deploy CuraHealth-backend \
-  --image gcr.io/$PROJECT_ID/CuraHealth-backend \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --set-env-vars="LLM_PROVIDER=groq,GROQ_MODEL=openai/gpt-oss-120b,GROQ_VISION_MODEL=meta-llama/llama-4-scout-17b-16e-instruct" \
-  --update-secrets="GROQ_API_KEY=GROQ_API_KEY:latest"
-```
-
 ---
 
 ## ⚖️ Clinical Disclaimer
