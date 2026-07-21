@@ -3,6 +3,10 @@ const getBaseUrl = () => {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       return 'http://localhost:8000';
     }
+    // Fallback if VITE_API_URL environment variable is provided in split environments
+    if (import.meta.env.VITE_API_URL) {
+      return import.meta.env.VITE_API_URL;
+    }
     return '';
   }
   return '';

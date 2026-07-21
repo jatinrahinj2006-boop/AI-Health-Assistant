@@ -161,13 +161,9 @@ export default function SymptomChecker({ onTriggerEmergency, resetNavReport, ini
   const handleRestart = () => {
     setStep('input');
     setSymptomText('');
-    setQuestions([]);
     setReport(null);
     if (resetNavReport) resetNavReport();
   };
-
-  const currentQ = questions[currentQuestionIndex];
-  const progressPercent = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   return (
     <div className="max-w-3xl mx-auto pb-12">
