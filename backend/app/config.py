@@ -17,8 +17,8 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY", os.getenv("ANTHROPIC_API_KEY", ""))
 # Note: Deprecated llama-3.3-70b-versatile is swapped for openai/gpt-oss-120b
 GROQ_MODEL = os.getenv("GROQ_MODEL", os.getenv("ANTHROPIC_MODEL", "openai/gpt-oss-120b"))
 
-# Vision Model: Deprecated llama-3.2-11b-vision-preview is swapped for meta-llama/llama-4-scout-17b-16e-instruct
-GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
+# Vision Model: Swap deprecated model for qwen/qwen3.6-27b
+GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "qwen/qwen3.6-27b")
 
 # CORS origins setting
 ALLOWED_ORIGINS_RAW = os.getenv("ALLOWED_ORIGINS", "")
