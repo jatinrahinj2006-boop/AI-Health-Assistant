@@ -88,7 +88,7 @@ function AppContent() {
         {/* Top Header Bar */}
         <header className="h-16 bg-white/70 dark:bg-slate-950/20 border-b border-slate-200/50 dark:border-slate-900/60 backdrop-blur-md flex items-center justify-between px-6 z-10">
           <div className="hidden md:flex items-center space-x-2 text-xs font-semibold text-slate-400 uppercase tracking-widest">
-            <span>AegisHealth AI Care Hub</span>
+            <span>CuraHealth AI Care Hub</span>
           </div>
 
           <div className="flex items-center space-x-3">
@@ -99,7 +99,7 @@ function AppContent() {
             <LanguageSelector />
             
             <button 
-              onClick={() => alert("AegisHealth Assistant v1.0.0\nCreated for clinical hackathon submission. Sourced with local safety keywords pre-filter scanning and structured JSON LLM output validation.")}
+              onClick={() => alert("CuraHealth Assistant v1.0.0\nCreated for clinical hackathon submission. Sourced with local safety keywords pre-filter scanning and structured JSON LLM output validation.")}
               className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-xl hover:bg-slate-500/5 cursor-pointer"
             >
               <HelpCircle className="w-5 h-5" />

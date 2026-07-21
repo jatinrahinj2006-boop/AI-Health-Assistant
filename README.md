@@ -1,6 +1,6 @@
-# AegisHealth AI — Intelligent Health Intake & Wellness Assistant
+# CuraHealth AI — Intelligent Health Intake & Wellness Assistant
 
-AegisHealth AI is a production-grade, premium digital health information dashboard designed for clinical hackathon submissions. It integrates an adaptive symptom-checker wizard, medication facts lookup, conversational AI chat, and a visual vision analyzer for medicine label/skin checks.
+CuraHealth AI is a production-grade, premium digital health information dashboard designed for clinical hackathon submissions. It integrates an adaptive symptom-checker wizard, medication facts lookup, conversational AI chat, and a visual vision analyzer for medicine label/skin checks.
 
 ---
 
@@ -71,7 +71,7 @@ GROQ_VISION_MODEL=meta-llama/llama-4-scout-17b-16e-instruct
 ALLOWED_ORIGINS=*
 ```
 
-*Note: If no `GROQ_API_KEY` is set, AegisHealth runs in local simulation mode, providing detailed, structured mock profiles with a simulated data badge.*
+*Note: If no `GROQ_API_KEY` is set, CuraHealth runs in local simulation mode, providing detailed, structured mock profiles with a simulated data badge.*
 
 ---
 
@@ -112,7 +112,7 @@ The web client will mount at `http://localhost:5173`. In local dev, Vite automat
 
 ## ☁️ Google Cloud Run Deployment Steps
 
-AegisHealth is fully containerized. To deploy the FastAPI service to Google Cloud Run:
+CuraHealth is fully containerized. To deploy the FastAPI service to Google Cloud Run:
 
 ### 1. Build and Tag the Docker Image
 Ensure you have the Google Cloud CLI installed. Execute from the root directory:
@@ -121,20 +121,20 @@ Ensure you have the Google Cloud CLI installed. Execute from the root directory:
 export PROJECT_ID="your-gcp-project-id"
 
 # Build the Docker image locally from the project root directory
-docker build -t gcr.io/$PROJECT_ID/aegishealth-backend -f backend/Dockerfile .
+docker build -t gcr.io/$PROJECT_ID/CuraHealth-backend -f backend/Dockerfile .
 ```
 
 ### 2. Push Image to Google Container Registry
 ```bash
 gcloud auth configure-docker
-docker push gcr.io/$PROJECT_ID/aegishealth-backend
+docker push gcr.io/$PROJECT_ID/CuraHealth-backend
 ```
 
 ### 3. Deploy to Cloud Run
 Deploy the container, setting the Groq API configuration parameters:
 ```bash
-gcloud run deploy aegishealth-backend \
-  --image gcr.io/$PROJECT_ID/aegishealth-backend \
+gcloud run deploy CuraHealth-backend \
+  --image gcr.io/$PROJECT_ID/CuraHealth-backend \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \
@@ -145,4 +145,4 @@ gcloud run deploy aegishealth-backend \
 ---
 
 ## ⚖️ Clinical Disclaimer
-AegisHealth AI is a clinical mock intake tool meant for health information lookup and patient simulation. Under no circumstances should the assessments provided replace professional medical diagnoses, emergency care guidance, or prescriptions.
+CuraHealth AI is a clinical mock intake tool meant for health information lookup and patient simulation. Under no circumstances should the assessments provided replace professional medical diagnoses, emergency care guidance, or prescriptions.

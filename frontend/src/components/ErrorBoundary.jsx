@@ -33,7 +33,7 @@ export default class ErrorBoundary extends Component {
             </div>
             <h2 className="text-xl font-bold text-white mb-3">Something went wrong</h2>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              AegisHealth encountered an unexpected rendering error. For safety reasons, we have halted the current screen.
+              CuraHealth encountered an unexpected rendering error. For safety reasons, we have halted the current screen.
             </p>
             <button
               onClick={this.handleReset}

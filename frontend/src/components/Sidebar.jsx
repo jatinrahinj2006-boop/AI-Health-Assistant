@@ -49,7 +49,7 @@ export default function Sidebar() {
           <div className="p-2 bg-health-500 rounded-lg text-white">
             <Activity className="w-4.5 h-4.5" />
           </div>
-          <span className="font-bold text-sm dark:text-white font-sans">AegisHealth</span>
+          <span className="font-bold text-sm dark:text-white font-sans">CuraHealth</span>
         </div>
         
         <button
@@ -69,7 +69,7 @@ export default function Sidebar() {
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-sm font-bold tracking-tight dark:text-white block font-sans">AegisHealth</span>
+              <span className="text-sm font-bold tracking-tight dark:text-white block font-sans">CuraHealth</span>
               <span className="text-[10px] font-semibold text-health-500 uppercase tracking-widest block -mt-0.5">AI Care Platform</span>
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function Sidebar() {
                     <div className="p-2 bg-health-500 rounded-xl text-white">
                       <Activity className="w-4.5 h-4.5" />
                     </div>
-                    <span className="font-bold text-sm dark:text-white">AegisHealth</span>
+                    <span className="font-bold text-sm dark:text-white">CuraHealth</span>
                   </div>
                   <button
                     onClick={() => setIsOpen(false)}

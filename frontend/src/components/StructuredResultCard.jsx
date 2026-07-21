@@ -86,7 +86,7 @@ export default function StructuredResultCard({
         heightLeft -= (pdfHeight - (margin * 2));
       }
       
-      pdf.save(`AegisHealth_Report_${Date.now()}.pdf`);
+      pdf.save(`CuraHealth_Report_${Date.now()}.pdf`);
     } catch (err) {
       console.error("PDF canvas export failed:", err);
       alert("Failed to export PDF: " + err.message);

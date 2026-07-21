@@ -10,7 +10,7 @@ from app.routers import chat, symptom_checker, medication, health_tips, image_an
 logger = logging.getLogger("app.startup")
 
 app = FastAPI(
-    title="AegisHealth AI - Clinical Health Information Assistant Backend",
+    title="CuraHealth AI - Clinical Health Information Assistant Backend",
     description="FastAPI service utilizing the Groq API for clinical symptom checker wizards, chat, and visual analyses.",
     version="1.0.0"
 )
@@ -21,10 +21,10 @@ async def startup_event():
     FastAPI startup diagnostics to verify Groq API configurations, list available
     models, and print active alerts if the configured models are decommissioned.
     """
-    print("\n=================== AegisHealth AI Diagnostics ===================")
+    print("\n=================== CuraHealth AI Diagnostics ===================")
     if not config.GROQ_API_KEY:
         print("INFO: GROQ_API_KEY is NOT configured.")
-        print("      AegisHealth is running in Local Simulation Mode (Mock data).")
+        print("      CuraHealth is running in Local Simulation Mode (Mock data).")
         print("==================================================================\n")
         return
 
@@ -120,7 +120,7 @@ if os.path.exists(static_dir):
         index_path = os.path.join(static_dir, "index.html")
         if os.path.exists(index_path):
             return FileResponse(index_path)
-        return {"message": "AegisHealth API Online"}
+        return {"message": "CuraHealth API Online"}
 
 if __name__ == "__main__":
     import os

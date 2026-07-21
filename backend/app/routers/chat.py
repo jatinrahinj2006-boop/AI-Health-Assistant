@@ -6,7 +6,7 @@ from app.config import GROQ_API_KEY
 
 router = APIRouter(prefix="/api/chat", tags=["Chat"])
 
-SYSTEM_CHAT_PROMPT = """You are AegisHealth AI, an empathetic and professional clinical assistant.
+SYSTEM_CHAT_PROMPT = """You are CuraHealth AI, an empathetic and professional clinical assistant.
 Your task is to hold a helpful, educational conversation about wellness, drugs, or symptoms.
 You must always output a JSON object matching this schema:
 {
@@ -62,7 +62,7 @@ async def chat_endpoint(payload: ChatRequest):
             mock_assessment = generate_mock_health_response(payload.message)
             reply = "I've structured a clinical summary card of your complaints below. Review the causes and guidelines. (Demo Simulation Mode)"
         else:
-            reply = "Hello! I am AegisHealth AI, running in mock simulation mode. If you mention symptoms like 'fever' or 'cough', I will display simulated clinical details!"
+            reply = "Hello! I am CuraHealth AI, running in mock simulation mode. If you mention symptoms like 'fever' or 'cough', I will display simulated clinical details!"
         return ChatResponse(chat_reply=reply, assessment=mock_assessment, source="mock")
 
     try:
@@ -91,5 +91,5 @@ async def chat_endpoint(payload: ChatRequest):
             mock_assessment = generate_mock_health_response(payload.message)
             reply = "I've structured a clinical summary card of your complaints below. (LLM call failed, fallback simulation active)"
         else:
-            reply = "Hello! AegisHealth AI is currently running in mock simulation mode due to gateway issues."
+            reply = "Hello! CuraHealth AI is currently running in mock simulation mode due to gateway issues."
         return ChatResponse(chat_reply=reply, assessment=mock_assessment, source="mock")
