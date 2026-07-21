@@ -14,6 +14,21 @@ from app.config import GROQ_API_KEY
 
 router = APIRouter(prefix="/api/symptom-check", tags=["Symptom Checker"])
 
+SYSTEM_SYMPTOM_START_PROMPT = """You are an expert clinical intake coordinator.
+Your task is to analyze the patient's primary symptom and ask the FIRST targeted follow-up question regarding location, severity, duration, onset, or accompanying symptoms.
+You must output a JSON object strictly matching this schema:
+{
+  "done": false,
+  "next_question": {
+    "question_text": "Targeted follow-up question regarding location, severity, duration, or onset...",
+    "options": ["Option 1", "Option 2", "Option 3"]
+  },
+  "assessment": null
+}
+
+Under no circumstances should you make an assessment or set "done" to true. Your sole focus is to generate the first high-quality, relevant clarification question to gather more information. Keep the question clear and concise.
+"""
+
 SYSTEM_SYMPTOM_PROCESS_PROMPT = """You are an expert clinical intake coordinator.
 Your task is to analyze the patient's primary symptom and Q&A history to decide if you have enough information to form a safe, educational health assessment.
 You must output a JSON object strictly matching this schema:
@@ -26,7 +41,7 @@ You must output a JSON object strictly matching this schema:
   "assessment": null
 }
 
-If you have collected sufficient details (typically after 2 to 4 questions have been answered, or if the details provided are already comprehensive), set "done" to true, "next_question" to null, and compile the final structured assessment card:
+If you have collected sufficient details (typically after 2 to 4 questions have been answered), set "done" to true, "next_question" to null, and compile the final structured assessment card:
 {
   "done": true,
   "next_question": null,
@@ -41,6 +56,8 @@ If you have collected sufficient details (typically after 2 to 4 questions have 
     "emergency_message": null
   }
 }
+
+CRITICAL RULE: If the history contains fewer than 2 answered questions, you MUST continue asking questions. Set "done" to false, "next_question" to a new relevant follow-up question, and "assessment" to null.
 If you suspect a medical emergency, set done=true, next_question=null, is_emergency=true, and provide emergency_message instructions immediately. Keep questions clear and concise.
 """
 
@@ -103,8 +120,16 @@ async def symptom_check_start(payload: SymptomCheckerStartRequest):
         result = await generate_structured_response(
             messages=messages,
             schema_class=SymptomCheckerQuestionsResponse,
-            system_instruction=SYSTEM_SYMPTOM_PROCESS_PROMPT + lang_instruction
+            system_instruction=SYSTEM_SYMPTOM_START_PROMPT + lang_instruction
         )
+        
+        # Enforce that start NEVER returns done=True
+        if result.done or result.assessment is not None:
+            result.done = False
+            result.assessment = None
+            if not result.next_question:
+                result.next_question = MOCK_QUESTIONS[0]
+                
         return result
     except Exception as e:
         # Fallback to mock questions on LLM failure
@@ -178,6 +203,15 @@ async def symptom_check_follow_up(payload: SymptomCheckerFollowUpRequest):
             schema_class=SymptomCheckerQuestionsResponse,
             system_instruction=SYSTEM_SYMPTOM_PROCESS_PROMPT + lang_instruction
         )
+        
+        # Enforce minimum of 2 follow-up questions before allowing done=True
+        if len(payload.history) < 2:
+            if result.done or result.assessment is not None:
+                result.done = False
+                result.assessment = None
+                if not result.next_question:
+                    result.next_question = MOCK_QUESTIONS[min(len(payload.history), len(MOCK_QUESTIONS)-1)]
+                    
         return result
     except Exception as e:
         # Fall back to mock assessment on LLM failure
