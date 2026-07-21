@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { HelpCircle, Shield, Phone } from 'lucide-react';
 
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
+import LanguageSelector from './components/LanguageSelector';
 import Sidebar from './components/Sidebar';
 import EmergencyBanner from './components/EmergencyBanner';
 import DisclaimerFooter from './components/DisclaimerFooter';
@@ -94,6 +96,7 @@ function AppContent() {
               <span className="w-2 h-2 rounded-full bg-red-500"></span>
               <span>Local 911 Safety Scanner Active</span>
             </div>
+            <LanguageSelector />
             
             <button 
               onClick={() => alert("AegisHealth Assistant v1.0.0\nCreated for clinical hackathon submission. Sourced with local safety keywords pre-filter scanning and structured JSON LLM output validation.")}
@@ -171,9 +174,11 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <LanguageProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

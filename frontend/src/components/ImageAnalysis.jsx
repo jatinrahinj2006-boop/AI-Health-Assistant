@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../utils/api';
+import StructuredResultCard from './StructuredResultCard';
 
 export default function ImageAnalysis({ onTriggerEmergency }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -310,100 +311,15 @@ export default function ImageAnalysis({ onTriggerEmergency }) {
                 </div>
               </div>
 
-              {/* Assessment Report Right (8 cols) */}
               <div className="md:col-span-8 print:col-span-12">
-                <div className="glass-panel p-6 md:p-8 bg-white dark:bg-slate-900/60 shadow-xl border border-slate-200/80 dark:border-slate-800/50 print:border-none print:shadow-none print:bg-white print:text-black">
-                  
-                  {/* Header */}
-                  <div className="flex items-center space-x-3 mb-6 pb-6 border-b border-slate-200/50 dark:border-slate-800/50">
-                    <div className="p-3 bg-amber-500/10 rounded-2xl text-amber-500">
-                      <Camera className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-bold dark:text-white print:text-black font-sans leading-tight">Visual Analysis Report</h2>
-                      <p className="text-[10px] text-slate-400 font-medium tracking-wide uppercase mt-0.5">
-                        {category === 'medication_packaging' ? 'Medicine Label Identification' : 'Dermatological Analysis'}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Summary */}
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-400 mb-2 uppercase tracking-wider font-sans">
-                        Visual Findings Summary
-                      </h3>
-                      <p className="p-4 bg-slate-500/5 rounded-xl border border-slate-200/30 dark:border-slate-800/30 text-xs md:text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-sans">
-                        {report.summary}
-                      </p>
-                    </div>
-
-                    {/* Causes */}
-                    <div>
-                      <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-400 mb-2.5 uppercase tracking-wider font-sans">
-                        Possible Identifications
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {report.possible_causes.map((c, i) => (
-                          <span key={i} className="px-3.5 py-1.5 rounded-lg text-xs font-medium border border-amber-500/20 bg-amber-500/10 text-amber-700 dark:text-amber-300 font-sans">
-                            {c}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Self Care / Warnings */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-                      <div>
-                        <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-400 mb-2.5 uppercase tracking-wider font-sans flex items-center">
-                          <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                          Recommendations
-                        </h3>
-                        <ul className="space-y-2">
-                          {report.self_care.map((tip, idx) => (
-                            <li key={idx} className="flex items-start text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                              <ChevronRight className="w-4 h-4 text-amber-500 mr-1.5 flex-shrink-0 mt-0.5" />
-                              <span>{tip}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-400 mb-2.5 uppercase tracking-wider font-sans flex items-center text-rose-500">
-                          <AlertTriangle className="w-4 h-4 mr-2" />
-                          Red Flag Safety Warnings
-                        </h3>
-                        <div className="p-4 bg-rose-500/5 border border-rose-500/20 rounded-xl space-y-2">
-                          {report.warning_signs.map((sign, idx) => (
-                            <div key={idx} className="flex items-start text-xs md:text-sm text-rose-700 dark:text-rose-350 font-medium">
-                              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2 flex-shrink-0 mt-2"></span>
-                              <span>{sign}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Doctor visit advice */}
-                    <div className="pt-2">
-                      <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-400 mb-2 uppercase tracking-wider font-sans">
-                        Next Steps Advice
-                      </h3>
-                      <div className="p-4 bg-amber-500/5 rounded-xl border border-amber-500/20 text-xs md:text-sm text-slate-700 dark:text-slate-350 leading-relaxed font-sans">
-                        {report.when_to_see_doctor}
-                      </div>
-                    </div>
-
-                    {/* Disclaimer */}
-                    <div className="pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
-                      <div className="text-[10px] text-slate-400 leading-relaxed italic text-center px-4 font-sans">
-                        {report.disclaimer}
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
+                <StructuredResultCard
+                  result={{
+                    ...report,
+                    disclaimer: "EXTRA IMPORTANT SAFETY WARNING: This analysis is based on static visual image evaluation. Lighting, resolution, and angle variations can severely alter visual assessments. This information does not constitute dermatological diagnosis or prescription verification. Confirm all medication information with a pharmacist and seek professional clinical review for skin anomalies."
+                  }}
+                  onBookmark={handleBookmark}
+                  isBookmarked={isBookmarked}
+                />
               </div>
 
             </div>

@@ -10,11 +10,16 @@ import {
   AlertTriangle,
   ChevronDown,
   ChevronUp,
-  Bookmark
+  Bookmark,
+  Mic,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../utils/api';
 import StructuredResultCard from './StructuredResultCard';
+import { useLanguage } from '../context/LanguageContext';
+import { useVoice } from '../hooks/useVoice';
 
 const PRESETS = [
   "What is hypertension & how is it managed?",
@@ -24,6 +29,19 @@ const PRESETS = [
 ];
 
 export default function AIChat({ onTriggerEmergency }) {
+  const { language, t } = useLanguage();
+  const { 
+    isListening, 
+    voiceSupported, 
+    speaking, 
+    startListening, 
+    stopListening, 
+    speak, 
+    stopSpeaking 
+  } = useVoice();
+
+  const [readAloud, setReadAloud] = useState(false);
+
   const [conversationId, setConversationId] = useState(() => {
     return 'chat_' + Date.now();
   });
@@ -36,6 +54,13 @@ export default function AIChat({ onTriggerEmergency }) {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Stop speaking when user navigates away
+  useEffect(() => {
+    return () => {
+      stopSpeaking();
+    };
+  }, []);
 
   // Auto-save conversation to local storage on message additions
   useEffect(() => {
@@ -97,7 +122,7 @@ export default function AIChat({ onTriggerEmergency }) {
         .filter(m => m.role === 'user' || m.role === 'assistant')
         .map(m => ({ role: m.role, content: m.content }));
 
-      const response = await api.sendChatMessage(query, historyContext);
+      const response = await api.sendChatMessage(query, historyContext, language);
 
       // 3. If an emergency was detected
       if (response.assessment && response.assessment.is_emergency) {
@@ -117,6 +142,10 @@ export default function AIChat({ onTriggerEmergency }) {
           assessment: response.assessment
         }
       ]);
+
+      if (readAloud) {
+        speak(response.chat_reply);
+      }
     } catch (err) {
       console.error("Chat message failed to send", err);
       setMessages(prev => [
@@ -229,14 +258,57 @@ export default function AIChat({ onTriggerEmergency }) {
         }}
         className="glass-panel p-3 flex items-center space-x-3 bg-white/90 dark:bg-slate-950/70 border border-slate-200/50 dark:border-slate-800/50 shadow-lg"
       >
+        {/* Web Speech Dictation mic button */}
+        {voiceSupported && (
+          <button
+            type="button"
+            onClick={() => {
+              if (isListening) {
+                stopListening();
+              } else {
+                startListening((text) => {
+                  setInputValue(prev => prev ? prev + ' ' + text : text);
+                });
+              }
+            }}
+            className={`p-3 rounded-xl transition-all cursor-pointer flex items-center justify-center ${
+              isListening
+                ? 'bg-red-500 text-white animate-pulse shadow-glow-red'
+                : 'bg-slate-500/10 text-slate-400 hover:text-slate-200'
+            }`}
+            title={isListening ? "Stop listening" : "Start voice input"}
+          >
+            <Mic className="w-4.5 h-4.5" />
+          </button>
+        )}
+
         <input
           type="text"
           disabled={loading}
           className="flex-1 bg-transparent p-2 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none text-xs md:text-sm"
-          placeholder="Ask a general health question or describe symptoms..."
+          placeholder={t('askAssistant')}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
+
+        {/* Read Aloud Toggle button */}
+        <button
+          type="button"
+          onClick={() => {
+            const nextVal = !readAloud;
+            setReadAloud(nextVal);
+            if (!nextVal) stopSpeaking();
+          }}
+          className={`p-3 rounded-xl transition-all cursor-pointer flex items-center justify-center ${
+            readAloud
+              ? 'bg-health-500/10 border border-health-500/30 text-health-500'
+              : 'bg-slate-500/10 text-slate-400 border border-transparent'
+          }`}
+          title={readAloud ? "Mute Read Aloud" : "Enable Read Aloud"}
+        >
+          {readAloud ? <Volume2 className="w-4.5 h-4.5" /> : <VolumeX className="w-4.5 h-4.5" />}
+        </button>
+
         <button
           type="submit"
           disabled={loading || !inputValue.trim()}
@@ -246,7 +318,7 @@ export default function AIChat({ onTriggerEmergency }) {
               : 'bg-slate-800 text-slate-500 cursor-not-allowed'
           }`}
         >
-          <Send className="w-4 h-4" />
+          <Send className="w-4.5 h-4.5" />
         </button>
       </form>
     </div>

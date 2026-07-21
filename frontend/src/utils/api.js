@@ -48,31 +48,31 @@ export const api = {
     return apiRequest('/health', { method: 'GET' });
   },
 
-  sendChatMessage: (message, history = []) => {
+  sendChatMessage: (message, history = [], language = "en") => {
     return apiRequest('/api/chat', {
       method: 'POST',
-      body: JSON.stringify({ message, history }),
+      body: JSON.stringify({ message, history, language }),
     });
   },
 
-  startSymptomCheck: (symptom) => {
+  startSymptomCheck: (symptom, language = "en") => {
     return apiRequest('/api/symptom-check/start', {
       method: 'POST',
-      body: JSON.stringify({ symptom }),
+      body: JSON.stringify({ symptom, language }),
     });
   },
 
-  followUpSymptomCheck: (symptom, history = []) => {
+  followUpSymptomCheck: (symptom, history = [], language = "en") => {
     return apiRequest('/api/symptom-check/follow-up', {
       method: 'POST',
-      body: JSON.stringify({ symptom, history }),
+      body: JSON.stringify({ symptom, history, language }),
     });
   },
 
-  lookupMedication: (medicationName) => {
+  lookupMedication: (medicationName, language = "en") => {
     return apiRequest('/api/medication/lookup', {
       method: 'POST',
-      body: JSON.stringify({ medication_name: medicationName }),
+      body: JSON.stringify({ medication_name: medicationName, language }),
     });
   },
 

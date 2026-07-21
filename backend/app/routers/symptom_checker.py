@@ -96,10 +96,14 @@ async def symptom_check_start(payload: SymptomCheckerStartRequest):
     try:
         messages = [{"role": "user", "content": f"The patient reports this symptom: '{payload.symptom}'. Ask the first relevant clarification question."}]
         
+        language_map = {"en": "English", "hi": "Hindi", "mr": "Marathi"}
+        lang_name = language_map.get(payload.language, "English")
+        lang_instruction = f"\n\nCRITICAL: You MUST write your entire response (all questions, options, and assessment fields) in {lang_name}."
+
         result = await generate_structured_response(
             messages=messages,
             schema_class=SymptomCheckerQuestionsResponse,
-            system_instruction=SYSTEM_SYMPTOM_PROCESS_PROMPT
+            system_instruction=SYSTEM_SYMPTOM_PROCESS_PROMPT + lang_instruction
         )
         return result
     except Exception as e:
@@ -165,10 +169,14 @@ async def symptom_check_follow_up(payload: SymptomCheckerFollowUpRequest):
 
         messages = [{"role": "user", "content": f"Review this patient intake context:\n\n{patient_history}\n\nDetermine if we are ready to assess or if another question is needed."}]
 
+        language_map = {"en": "English", "hi": "Hindi", "mr": "Marathi"}
+        lang_name = language_map.get(payload.language, "English")
+        lang_instruction = f"\n\nCRITICAL: You MUST write your entire response (all questions, options, and assessment fields) in {lang_name}."
+
         result = await generate_structured_response(
             messages=messages,
             schema_class=SymptomCheckerQuestionsResponse,
-            system_instruction=SYSTEM_SYMPTOM_PROCESS_PROMPT
+            system_instruction=SYSTEM_SYMPTOM_PROCESS_PROMPT + lang_instruction
         )
         return result
     except Exception as e:

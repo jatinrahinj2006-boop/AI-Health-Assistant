@@ -21,6 +21,7 @@ class ChatQA(BaseModel):
 class ChatRequest(BaseModel):
     message: str = Field(..., description="The current user message")
     history: List[ChatQA] = Field(default=[], description="Recent conversation history context")
+    language: str = Field("en", description="Language code requested (en, hi, mr)")
 
 class ChatResponse(BaseModel):
     chat_reply: str = Field(..., description="Conversational health guidance response")
@@ -29,6 +30,7 @@ class ChatResponse(BaseModel):
 
 class SymptomCheckerStartRequest(BaseModel):
     symptom: str = Field(..., description="The user's initial free-text symptom description")
+    language: str = Field("en", description="Language code requested (en, hi, mr)")
 
 class SymptomQA(BaseModel):
     question: str = Field(..., description="Intake follow-up question text")
@@ -37,6 +39,7 @@ class SymptomQA(BaseModel):
 class SymptomCheckerFollowUpRequest(BaseModel):
     symptom: str = Field(..., description="The patient's initial primary symptom")
     history: List[SymptomQA] = Field(default=[], description="Questions and answers recorded so far in this session")
+    language: str = Field("en", description="Language code requested (en, hi, mr)")
 
 class FollowUpQuestion(BaseModel):
     question_text: str = Field(..., description="The text of the follow-up question")
@@ -50,6 +53,7 @@ class SymptomCheckerQuestionsResponse(BaseModel):
 
 class MedicationRequest(BaseModel):
     medication_name: str = Field(..., description="Name of the medicine/drug to lookup")
+    language: str = Field("en", description="Language code requested (en, hi, mr)")
 
 class MedicationInfo(BaseModel):
     name: str = Field(..., description="Generic and brand name of the drug")

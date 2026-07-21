@@ -11,13 +11,20 @@ import {
   Check,
   Printer,
   Bookmark,
-  Activity
+  Activity,
+  Mic
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../utils/api';
 import StructuredResultCard from './StructuredResultCard';
+import { useLanguage } from '../context/LanguageContext';
+import { useVoice } from '../hooks/useVoice';
 
 export default function SymptomChecker({ onTriggerEmergency, resetNavReport, initialReport }) {
+  const { language, t } = useLanguage();
+  const { isListening, voiceSupported, startListening, stopListening } = useVoice();
+  const [activeMicField, setActiveMicField] = useState(null); // 'symptom' or 'custom'
+
   const [step, setStep] = useState(initialReport ? 'report' : 'input'); // 'input', 'questions', 'report'
   const [symptomText, setSymptomText] = useState(initialReport ? 'Saved Report' : '');
   const [loading, setLoading] = useState(false);
@@ -37,7 +44,7 @@ export default function SymptomChecker({ onTriggerEmergency, resetNavReport, ini
 
     setLoading(true);
     try {
-      const response = await api.startSymptomCheck(symptomText);
+      const response = await api.startSymptomCheck(symptomText, language);
       
       if (response.done) {
         if (response.assessment.is_emergency) {
@@ -78,7 +85,7 @@ export default function SymptomChecker({ onTriggerEmergency, resetNavReport, ini
     
     setLoading(true);
     try {
-      const response = await api.followUpSymptomCheck(symptomText, updatedHistory);
+      const response = await api.followUpSymptomCheck(symptomText, updatedHistory, language);
       
       if (response.done) {
         if (response.assessment.is_emergency) {
@@ -191,13 +198,40 @@ export default function SymptomChecker({ onTriggerEmergency, resetNavReport, ini
                 <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">
                   Primary Symptom & Duration
                 </label>
-                <textarea
-                  rows={4}
-                  className="w-full p-4 rounded-xl border border-slate-200/50 dark:border-slate-800/40 bg-slate-500/5 focus:bg-slate-500/10 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-1 focus:ring-health-500 transition-all font-sans leading-relaxed"
-                  placeholder="E.g., I have been experiencing a mild dry cough and slight fever for about 3 days. It gets slightly worse at night."
-                  value={symptomText}
-                  onChange={(e) => setSymptomText(e.target.value)}
-                />
+                <div className="relative">
+                  <textarea
+                    rows={4}
+                    className="w-full p-4 pr-12 rounded-xl border border-slate-200/50 dark:border-slate-800/40 bg-slate-500/5 focus:bg-slate-500/10 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-1 focus:ring-health-500 transition-all font-sans leading-relaxed"
+                    placeholder={t('enterSymptom')}
+                    value={symptomText}
+                    onChange={(e) => setSymptomText(e.target.value)}
+                  />
+                  {voiceSupported && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (isListening && activeMicField === 'symptom') {
+                          stopListening();
+                          setActiveMicField(null);
+                        } else {
+                          setActiveMicField('symptom');
+                          startListening((text) => {
+                            setSymptomText(prev => prev ? prev + ' ' + text : text);
+                            setActiveMicField(null);
+                          });
+                        }
+                      }}
+                      className={`absolute right-3 bottom-4 p-2.5 rounded-lg transition-all cursor-pointer flex items-center justify-center ${
+                        isListening && activeMicField === 'symptom'
+                          ? 'bg-red-500 text-white animate-pulse shadow-glow-red'
+                          : 'bg-slate-500/10 text-slate-400 hover:text-slate-200'
+                      }`}
+                      title="Voice Input"
+                    >
+                      <Mic className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="p-4 bg-health-500/5 rounded-xl border border-health-500/10 flex items-start space-x-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
@@ -299,16 +333,44 @@ export default function SymptomChecker({ onTriggerEmergency, resetNavReport, ini
                 <label className="block text-[10px] font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
                   Or specify custom details:
                 </label>
-                <input
-                  type="text"
-                  className="w-full p-3.5 rounded-xl border border-slate-200/50 dark:border-slate-800/40 bg-slate-500/5 text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm focus:outline-none focus:ring-1 focus:ring-health-500"
-                  placeholder="Type your own answer here if none of the above match..."
-                  value={selectedOption && !customTextAnswer ? '' : customTextAnswer}
-                  onChange={(e) => {
-                    setCustomTextAnswer(e.target.value);
-                    setSelectedOption(''); // Clear option selection
-                  }}
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="w-full p-3.5 pr-12 rounded-xl border border-slate-200/50 dark:border-slate-800/40 bg-slate-500/5 text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm focus:outline-none focus:ring-1 focus:ring-health-500"
+                    placeholder="Type your own answer here if none of the above match..."
+                    value={selectedOption && !customTextAnswer ? '' : customTextAnswer}
+                    onChange={(e) => {
+                      setCustomTextAnswer(e.target.value);
+                      setSelectedOption(''); // Clear option selection
+                    }}
+                  />
+                  {voiceSupported && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (isListening && activeMicField === 'custom') {
+                          stopListening();
+                          setActiveMicField(null);
+                        } else {
+                          setActiveMicField('custom');
+                          startListening((text) => {
+                            setCustomTextAnswer(prev => prev ? prev + ' ' + text : text);
+                            setSelectedOption('');
+                            setActiveMicField(null);
+                          });
+                        }
+                      }}
+                      className={`absolute right-2 top-2 p-2 rounded-lg transition-all cursor-pointer flex items-center justify-center ${
+                        isListening && activeMicField === 'custom'
+                          ? 'bg-red-500 text-white animate-pulse shadow-glow-red'
+                          : 'bg-slate-500/10 text-slate-400 hover:text-slate-200'
+                      }`}
+                      title="Voice Input"
+                    >
+                      <Mic className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 

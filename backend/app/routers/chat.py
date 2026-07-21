@@ -73,10 +73,14 @@ async def chat_endpoint(payload: ChatRequest):
         
         formatted_messages.append({"role": "user", "content": payload.message})
 
+        language_map = {"en": "English", "hi": "Hindi", "mr": "Marathi"}
+        lang_name = language_map.get(payload.language, "English")
+        lang_instruction = f"\n\nCRITICAL: You MUST write your entire response (both 'chat_reply' and all inner 'assessment' object text fields) in {lang_name}. Do not write English unless it is an untranslatable medical term."
+
         chat_data = await generate_structured_response(
             messages=formatted_messages,
             schema_class=ChatResponse,
-            system_instruction=SYSTEM_CHAT_PROMPT
+            system_instruction=SYSTEM_CHAT_PROMPT + lang_instruction
         )
         return chat_data
     except Exception as e:

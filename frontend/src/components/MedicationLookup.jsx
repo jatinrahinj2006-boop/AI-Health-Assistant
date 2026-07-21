@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../utils/api';
+import { useLanguage } from '../context/LanguageContext';
 
 const AUTO_SUGGESTIONS = [
   "Ibuprofen",
@@ -24,6 +25,7 @@ const AUTO_SUGGESTIONS = [
 ];
 
 export default function MedicationLookup() {
+  const { language } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState(null);
@@ -55,7 +57,7 @@ export default function MedicationLookup() {
     
     setLoading(true);
     try {
-      const data = await api.lookupMedication(query);
+      const data = await api.lookupMedication(query, language);
       setDetails(data);
       
       // Save search term to recent searches
