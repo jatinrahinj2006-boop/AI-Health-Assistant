@@ -47,6 +47,11 @@ export default function StructuredResultCard({
         actionButtons.style.visibility = 'hidden';
       }
 
+      // Await complete loading of async web fonts to prevent blank/tofu characters in PDF
+      if (document.fonts) {
+        await document.fonts.ready;
+      }
+
       const canvas = await html2canvas(cardRef.current, {
         scale: 2, // High resolution scaling
         useCORS: true,

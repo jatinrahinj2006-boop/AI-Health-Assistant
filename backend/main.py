@@ -68,10 +68,15 @@ async def startup_event():
     print("==================================================================\n")
 
 # CORS configuration
+allow_origins = config.ALLOWED_ORIGINS
+allow_credentials = True
+if "*" in allow_origins:
+    allow_credentials = False
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=config.ALLOWED_ORIGINS,
-    allow_credentials=True,
+    allow_origins=allow_origins,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -118,4 +123,8 @@ async def health_status():
     }
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=config.PORT, reload=True)
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    # Disable Uvicorn auto-reload in production container to optimize resources
+    reload_enabled = os.environ.get("ENV", "development") == "development"
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=reload_enabled)

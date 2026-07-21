@@ -21,8 +21,16 @@ GROQ_MODEL = os.getenv("GROQ_MODEL", os.getenv("ANTHROPIC_MODEL", "openai/gpt-os
 GROQ_VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
 
 # CORS origins setting
-ALLOWED_ORIGINS_RAW = os.getenv("ALLOWED_ORIGINS", "*")
-ALLOWED_ORIGINS = [origin.strip() for origin in ALLOWED_ORIGINS_RAW.split(",") if origin.strip()]
+ALLOWED_ORIGINS_RAW = os.getenv("ALLOWED_ORIGINS", "")
+if ALLOWED_ORIGINS_RAW:
+    ALLOWED_ORIGINS = [origin.strip() for origin in ALLOWED_ORIGINS_RAW.split(",") if origin.strip()]
+else:
+    ALLOWED_ORIGINS = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+    ]
 
 # Server port for deployments
 PORT = int(os.getenv("PORT", 8000))
