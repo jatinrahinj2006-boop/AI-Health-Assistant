@@ -161,6 +161,12 @@ export default function NearbySpecialists() {
   };
 
   const triggerSearch = async (userCoords, userAddress, specialty, searchRadius) => {
+    if (!userCoords && (!userAddress || !userAddress.trim())) {
+      setSpecialists([]);
+      setSelectedPlace(null);
+      setSearchTriggered(true);
+      return;
+    }
     setLoading(true);
     setSearchTriggered(true);
     try {
@@ -353,6 +359,12 @@ export default function NearbySpecialists() {
                 <MapIcon className="w-16 h-16 text-slate-500 mb-4 opacity-40" />
                 <h3 className="text-base font-bold dark:text-white mb-1">Select a specialty to begin search</h3>
                 <p className="text-xs max-w-sm">Choose one of the specialized plain-language doctor filters on the left to locate local clinics and hospitals.</p>
+              </div>
+            ) : (!coords && !address.trim()) ? (
+              <div className="glass-panel p-12 text-center text-slate-400 flex flex-col items-center justify-center h-[450px]">
+                <MapPin className="w-16 h-16 text-health-500 mb-4 opacity-40" />
+                <h3 className="text-base font-bold dark:text-white mb-1">Location Required</h3>
+                <p className="text-xs max-w-sm">Please allow location access or type a city/pincode in the left panel to search for specialists.</p>
               </div>
             ) : loading ? (
               <div className="glass-panel p-12 text-center text-slate-400 flex flex-col items-center justify-center h-[450px]">

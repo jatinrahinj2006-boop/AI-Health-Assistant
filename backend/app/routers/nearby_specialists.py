@@ -136,7 +136,11 @@ async def get_nearby_specialists(payload: NearbySpecialistsRequest):
     clinical_query = SPECIALTY_MAPPING[payload.specialty]
     
     # 2. Key Check and Mock Fallback
-    if not GOOGLE_PLACES_API_KEY:
+    is_placeholder = (
+        not GOOGLE_PLACES_API_KEY or 
+        GOOGLE_PLACES_API_KEY.lower().strip() in ["", "your_places_api_key", "change_me", "placeholder", "your_api_key_here"]
+    )
+    if is_placeholder:
         # Generate mock lists centered around Mumbai or user coordinate
         center_lat = payload.latitude if payload.latitude is not None else 19.0760
         center_lon = payload.longitude if payload.longitude is not None else 72.8777
@@ -179,6 +183,11 @@ async def get_nearby_specialists(payload: NearbySpecialistsRequest):
             raise HTTPException(status_code=502, detail="Failed to fetch details from Google Places API.")
             
         data = response.json()
+        status = data.get("status")
+        if status not in ["OK", "ZERO_RESULTS"]:
+            error_msg = data.get("error_message", "Google Places API error status.")
+            raise Exception(f"Google Places API error: {status} - {error_msg}")
+            
         results = data.get("results", [])
         
         places = []
